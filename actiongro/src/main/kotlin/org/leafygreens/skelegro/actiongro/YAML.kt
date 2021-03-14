@@ -1,4 +1,4 @@
-package org.leafygreens.actiongro
+package org.leafygreens.skelegro.actiongro
 
 interface YAML {
   fun buildEntity(build: StringBuilder.() -> Unit): String {

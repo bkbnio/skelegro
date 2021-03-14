@@ -1,4 +1,4 @@
-package org.leafygreens.actiongro
+package org.leafygreens.skelegro.actiongro
 
 import java.io.File
 

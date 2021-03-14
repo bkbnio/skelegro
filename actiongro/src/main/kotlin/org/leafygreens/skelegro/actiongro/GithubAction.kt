@@ -1,4 +1,4 @@
-package org.leafygreens.actiongro
+package org.leafygreens.skelegro.actiongro
 
 @GithubActionDslMarker
 class GithubAction(var entities: MutableList<ActionEntity> = mutableListOf()) : YAML {

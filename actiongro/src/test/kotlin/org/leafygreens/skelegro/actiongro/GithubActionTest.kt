@@ -1,12 +1,12 @@
-package org.leafygreens.actiongro
+package org.leafygreens.skelegro.actiongro
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.leafygreens.actiongro.ActionEntityExtensions.arrayEntity
-import org.leafygreens.actiongro.ActionEntityExtensions.nestedEntities
-import org.leafygreens.actiongro.ActionEntityExtensions.nestedEntity
-import org.leafygreens.actiongro.ActionEntityExtensions.stringEntity
-import org.leafygreens.actiongro.TestData.getFileSnapshot
+import org.leafygreens.skelegro.actiongro.ActionEntityExtensions.arrayEntity
+import org.leafygreens.skelegro.actiongro.ActionEntityExtensions.nestedEntities
+import org.leafygreens.skelegro.actiongro.ActionEntityExtensions.nestedEntity
+import org.leafygreens.skelegro.actiongro.ActionEntityExtensions.stringEntity
+import org.leafygreens.skelegro.actiongro.TestData.getFileSnapshot
 
 internal class GithubActionTest {
 

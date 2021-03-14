@@ -1,6 +1,6 @@
-package org.leafygreens.actiongro
+package org.leafygreens.skelegro.actiongro
 
-import org.leafygreens.actiongro.Constants.TAB
+import org.leafygreens.skelegro.actiongro.Constants.TAB
 
 open class ActionEntity : YAML {
 

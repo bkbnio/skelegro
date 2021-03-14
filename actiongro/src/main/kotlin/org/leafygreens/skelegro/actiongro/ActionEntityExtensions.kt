@@ -1,4 +1,4 @@
-package org.leafygreens.actiongro
+package org.leafygreens.skelegro.actiongro
 
 object ActionEntityExtensions {
   fun GithubAction.stringEntity(init: ActionEntity.StringEntityWrapper.() -> Unit): ActionEntity.StringEntityWrapper {
