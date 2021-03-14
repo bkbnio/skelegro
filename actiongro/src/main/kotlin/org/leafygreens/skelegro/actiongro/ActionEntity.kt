@@ -73,4 +73,3 @@ open class ActionEntity : YAML {
     override var values: MutableList<ActionEntity> = mutableListOf()
   ) : NestedEntities(key, values)
 }
-

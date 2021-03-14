@@ -1,6 +1,6 @@
 package org.leafygreens.skelegro.dockergro
 
-class Multistage(var stages: ArrayList<Dockerfile> = arrayListOf()) : IDockerfile {
+class MultiStage(var stages: ArrayList<Dockerfile> = arrayListOf()) : IDockerfile {
 
   private fun multistageBuilder(build: StringBuilder.() -> Unit): String {
     val stringBuilder = StringBuilder()
@@ -17,11 +17,11 @@ class Multistage(var stages: ArrayList<Dockerfile> = arrayListOf()) : IDockerfil
   }
 }
 
-fun multistage(init: Multistage.() -> Unit): Multistage {
-  return Multistage().apply(init)
+fun multistage(init: MultiStage.() -> Unit): MultiStage {
+  return MultiStage().apply(init)
 }
 
-fun Multistage.docker(init: Dockerfile.() -> Unit): Dockerfile {
+fun MultiStage.docker(init: Dockerfile.() -> Unit): Dockerfile {
   val dockerfile = Dockerfile().apply(init)
   stages.add(dockerfile)
   return dockerfile
