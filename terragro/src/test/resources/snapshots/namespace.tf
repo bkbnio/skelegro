@@ -3,11 +3,9 @@ resource "kubernetes_namespace" "vault" {
     annotations = {
       name = "vault"
     }
-
     labels = {
       role = "vault"
     }
-
     name = "vault"
   }
 }

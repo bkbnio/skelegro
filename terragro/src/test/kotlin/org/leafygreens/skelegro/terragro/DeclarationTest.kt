@@ -196,4 +196,30 @@ internal class DeclarationTest {
     assertThat(result).isEqualTo(expected.trim())
   }
 
+  @Test
+  fun `Can build a namespace via DSL`() {
+    // when
+    val namespace = "vault"
+    val manifest = terraformManifest {
+      resourceDeclaration("kubernetes_namespace", namespace) {
+        objectEntity("metadata") {
+          entityMap<String>("annotations") {
+            keyVal("name", namespace)
+          }
+          entityMap<String>("labels") {
+            keyVal("role", namespace)
+          }
+          keyVal("name", namespace)
+        }
+      }
+    }
+
+    // do
+    val result = manifest.toString()
+
+    // expect
+    val expected = getFileSnapshot("namespace.tf")
+    assertThat(result).isEqualTo(expected.trim())
+  }
+
 }
