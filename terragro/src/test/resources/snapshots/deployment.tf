@@ -1,94 +1,67 @@
 variable "github_token" {
-  type      = string
+  type = string
   sensitive = true
 }
-
-// TODO Bump labels to a constant and reference??
-resource "kubernetes_deployment" "backbone_generator" {
+resource "kubernetes_deployment" "potato_app" {
   metadata {
-    name = "backbone-generator"
+    name = "potato-app"
     labels = {
-      application = "backbone-generator"
-      owner       = "leafygreens-backbone"
+      application = "potato-app"
+      owner = "big-boss"
     }
   }
-
   spec {
     replicas = 3
-
     selector {
       match_labels = {
-        application = "backbone-generator"
-        owner = "leafygreens-backbone"
+        application = "potato-app"
+        owner = "big-boss"
       }
     }
-
-
     template {
       metadata {
         labels = {
-          application = "backbone-generator"
-          owner = "leafygreens-backbone"
+          application = "potato-app"
+          owner = "big-boss"
         }
       }
-
-
       spec {
-
         image_pull_secrets {
           name = "ghcr"
         }
-
         container {
-          image = "ghcr.io/lg-backbone/backbone-cortex-generator:0.7.0-snapshot"
-          name  = "backbone-generator"
-
+          image = "my-image:latest"
+          name = "potato-app"
           image_pull_policy = "Always"
-
           port {
             container_port = 8080
             protocol = "TCP"
           }
-
           env {
-            name  = "MONGO_USER"
-            value = "generator"
+            name = "MY_SPECIAL_ENV_VAR"
+            value = "potato"
           }
-
           env {
-            name  = "MONGO_PASSWORD"
-            value = "todo"
-          }
-
-          env {
-            name  = "MONGO_HOST"
-            value = "backbone-generator-mongo-mongodb"
-          }
-
-          env {
-            name  = "GITHUB_TOKEN"
+            name = "GITHUB_TOKEN"
             value = var.github_token
           }
-
           resources {
             limits = {
-              cpu    = "1"
+              cpu = "1"
               memory = "1024Mi"
             }
             requests = {
-              cpu    = "0.5"
+              cpu = "0.5"
               memory = "512Mi"
             }
           }
-
           liveness_probe {
             http_get {
               path = "/"
               port = 8080
             }
-
             initial_delay_seconds = 30
-            period_seconds        = 30
+            period_seconds = 30
           }
         }
       }
