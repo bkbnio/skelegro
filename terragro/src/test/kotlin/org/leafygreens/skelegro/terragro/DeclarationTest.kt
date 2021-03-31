@@ -1,6 +1,7 @@
 package org.leafygreens.skelegro.terragro
 
 import com.google.common.truth.Truth.assertThat
+import kotlin.math.exp
 import org.junit.jupiter.api.Test
 import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.entityMap
 import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.keyVal
@@ -314,6 +315,42 @@ internal class DeclarationTest {
         keyVal("config_context", "my-cluster")
       }
     }
+
+    // do
+    val result = manifest.toString()
+
+    // expect
+    val expected = getFileSnapshot("providers.tf")
+    assertThat(result).isEqualTo(expected.trim())
+  }
+
+  @Test
+  fun `Can build a service via DSL with a resource reference`() {
+    // when
+    val manifest = terraformManifest {
+      resourceDeclaration("kubernetes_service", "my_service") {
+        objectEntity("metadata") {
+          keyVal("name", "my-service")
+        }
+        objectEntity("spec") {
+          entityMap<ResourceReference>("selector") {
+            keyVal("application", ResourceReference("kubernetes_deployment.my_app.metadata.0.labels.application"))
+            keyVal("owner", ResourceReference("kubernetes_deployment.my_app.metadata.0.labels.owner"))
+          }
+          objectEntity("port") {
+            keyVal("port", 80)
+            keyVal("target_port", 8080)
+          }
+        }
+      }
+    }
+
+    // do
+    val result = manifest.toString()
+
+    // expect
+    val expected = getFileSnapshot("service.tf")
+    assertThat(result).isEqualTo(expected.trim())
   }
 
 }

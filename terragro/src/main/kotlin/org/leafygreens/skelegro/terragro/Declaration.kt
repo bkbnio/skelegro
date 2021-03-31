@@ -159,6 +159,7 @@ object DeclarationEntityExtensions {
     return entity
   }
 
+  // This... cannot be typed 🤔 Needs to be able to take any valid type of Simple entity, cuz of references n stuff
   fun <T> DeclarationEntity.Object.entityMap(
     name: String,
     init: DeclarationEntity.Map<T>.() -> Unit
@@ -183,4 +184,8 @@ object DeclarationEntityExtensions {
 
 class VariableReference(private val varName: String) {
   override fun toString() = "var.$varName"
+}
+
+class ResourceReference(private val resourcePath: String) {
+  override fun toString() = resourcePath
 }
