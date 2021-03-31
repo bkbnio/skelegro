@@ -13,7 +13,6 @@ class TerraformManifest(var declarations: MutableList<Declaration> = mutableList
   }
 }
 
-
 fun terraformManifest(init: TerraformManifest.() -> Unit): TerraformManifest {
   val manifest = TerraformManifest()
   manifest.init()
