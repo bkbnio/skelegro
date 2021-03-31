@@ -11,9 +11,7 @@ version = run {
 plugins {
   id("org.jetbrains.kotlin.jvm")
   id("io.gitlab.arturbosch.detekt")
-  id("com.github.johnrengelman.shadow")
   idea
-  `maven-publish`
 }
 
 repositories {
@@ -67,10 +65,6 @@ tasks {
       jvmTarget = "14"
     }
   }
-  named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
-    @Suppress("DEPRECATION")
-    classifier = "shadow"
-  }
 }
 
 detekt {
@@ -81,23 +75,4 @@ detekt {
 
 dependencies {
   detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.16.0-RC2")
-}
-
-publishing {
-  repositories {
-    maven {
-      name = "GithubPackages"
-      url = uri("https://maven.pkg.github.com/lg-backbone/skelegro")
-      credentials {
-        username = System.getenv("GITHUB_ACTOR")
-        password = System.getenv("GITHUB_TOKEN")
-      }
-    }
-  }
-  publications {
-    create<MavenPublication>("library") {
-      from(components["kotlin"])
-      artifact(tasks["shadowJar"])
-    }
-  }
 }

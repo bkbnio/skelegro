@@ -1,2 +1,2 @@
 rootProject.name = "skelegro"
-include("dockergro", "gradlegro", "actiongro")
+include("dockergro", "gradlegro", "actiongro", "terragro", "utils")
