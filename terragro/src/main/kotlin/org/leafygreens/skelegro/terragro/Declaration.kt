@@ -41,7 +41,6 @@ sealed class Declaration : EntityBuilder {
 }
 
 sealed class DeclarationEntity : EntityBuilder {
-  // simple (string, int, bool)
   class Simple<T>(
     var key: String? = null,
     var value: T? = null
@@ -51,13 +50,23 @@ sealed class DeclarationEntity : EntityBuilder {
       else -> "$key = $value"
     }
   }
-  // map
+  class Map<T>(
+    var key: String? = null,
+    var values: MutableList<DeclarationEntity.Simple<T>> = mutableListOf()
+  ) : DeclarationEntity() {
+    override fun toString() = buildEntity {
+      appendLine("$key = {")
+      values.forEach { value -> appendLine("$TAB$value") }
+      appendLine("}")
+    }
+  }
+
   // set
   // object
   class Object(var name: String? = null, var values: MutableList<DeclarationEntity> = mutableListOf()) : DeclarationEntity() {
     override fun toString() = buildEntity {
       appendLine("$name {")
-      // TODO
+      values.forEach { value -> value.toString().lines().forEach { appendLine("$TAB$it") } }
       appendLine("}")
     }
   }

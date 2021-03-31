@@ -27,7 +27,17 @@ internal class DeclarationTest {
   fun `Can build a resource declaration`() {
     // when
     val entities = mutableListOf<DeclarationEntity>(
-      DeclarationEntity.Object("metadata"),
+      DeclarationEntity.Object(
+        "metadata", values = mutableListOf(
+          DeclarationEntity.Simple("name", "backbone-generator"),
+          DeclarationEntity.Map(
+            "labels", mutableListOf(
+              DeclarationEntity.Simple("application", "backbone-generator"),
+              DeclarationEntity.Simple("owner", "leafygreens-backbone")
+            )
+          )
+        )
+      ),
       DeclarationEntity.Object("spec")
     )
     val declaration = Declaration.Resource("kubernetes_deployment", "backbone_generator", entities)
@@ -39,6 +49,11 @@ internal class DeclarationTest {
     val expected = """
       resource "kubernetes_deployment" "backbone_generator" {
         metadata {
+          name = "backbone-generator"
+          labels = {
+            application = "backbone-generator"
+            owner = "leafygreens-backbone"
+          }
         }
         spec {
         }
