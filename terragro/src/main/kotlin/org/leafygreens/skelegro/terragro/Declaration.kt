@@ -38,8 +38,27 @@ sealed class Declaration : EntityBuilder {
       appendLine("}")
     }
   }
-  // provider declaration
-  // terraform declaration
+
+  class Provider(
+    private val name: String,
+    override val entities: MutableList<DeclarationEntity> = mutableListOf()
+  ) : NestedDeclaration(entities) {
+    override fun toString() = buildEntity {
+      appendLine("provider ${quoted(name)} {")
+      entities.forEach { entity -> entity.toString().lines().forEach { appendLine("$TAB$it") } }
+      appendLine("}")
+    }
+  }
+
+  class Terraform(
+    override val entities: MutableList<DeclarationEntity> = mutableListOf()
+  ) : NestedDeclaration(entities) {
+    override fun toString() = buildEntity {
+      appendLine("terraform {")
+      entities.forEach { entity -> entity.toString().lines().forEach { appendLine("$TAB$it") } }
+      appendLine("}")
+    }
+  }
 }
 
 object DeclarationExtensions {
@@ -56,6 +75,20 @@ object DeclarationExtensions {
     init: Declaration.Resource.() -> Unit
   ): Declaration.Resource {
     val declaration = Declaration.Resource(type, name)
+    declaration.init()
+    declarations.add(declaration)
+    return declaration
+  }
+
+  fun TerraformManifest.terraformDeclaration(init: Declaration.Terraform.() -> Unit): Declaration.Terraform {
+    val declaration = Declaration.Terraform()
+    declaration.init()
+    declarations.add(declaration)
+    return declaration
+  }
+
+  fun TerraformManifest.providerDeclaration(name: String, init: Declaration.Provider.() -> Unit): Declaration.Provider {
+    val declaration = Declaration.Provider(name)
     declaration.init()
     declarations.add(declaration)
     return declaration
@@ -106,6 +139,12 @@ object DeclarationEntityExtensions {
     declarationEntity.init()
     entities.add(declarationEntity)
     return declarationEntity
+  }
+
+  fun <T> Declaration.NestedDeclaration.keyVal(key: String, value: T): DeclarationEntity.Simple<T> {
+    val entity = DeclarationEntity.Simple(key, value)
+    entities.add(entity)
+    return entity
   }
 
   fun <T> DeclarationEntity.Object.keyVal(key: String, value: T): DeclarationEntity.Simple<T> {

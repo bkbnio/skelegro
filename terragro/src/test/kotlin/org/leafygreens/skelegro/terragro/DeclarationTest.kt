@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test
 import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.entityMap
 import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.keyVal
 import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.objectEntity
+import org.leafygreens.skelegro.terragro.DeclarationExtensions.providerDeclaration
 import org.leafygreens.skelegro.terragro.DeclarationExtensions.resourceDeclaration
+import org.leafygreens.skelegro.terragro.DeclarationExtensions.terraformDeclaration
 import org.leafygreens.skelegro.terragro.DeclarationExtensions.variableDeclaration
 import org.leafygreens.skelegro.terragro.TestData.getFileSnapshot
 
@@ -24,6 +26,69 @@ internal class DeclarationTest {
       variable "github_token" {
         type = string
         sensitive = true
+      }
+    """.trimIndent()
+    assertThat(result).isEqualTo(expected)
+  }
+
+  @Test
+  fun `Can build a provider declaration`() {
+    // when
+    val entities = mutableListOf<DeclarationEntity>(
+      DeclarationEntity.Object(
+        "kubernetes",
+        mutableListOf(
+          DeclarationEntity.Simple("config_path", "~/.kube/config"),
+          DeclarationEntity.Simple("config_context", "my-cluster")
+        )
+      )
+    )
+    val declaration = Declaration.Provider("helm", entities)
+
+    // do
+    val result = declaration.toString()
+
+    // expect
+    val expected = """
+      provider "helm" {
+        kubernetes {
+          config_path = "~/.kube/config"
+          config_context = "my-cluster"
+        }
+      }
+    """.trimIndent()
+    assertThat(result).isEqualTo(expected)
+  }
+
+  @Test
+  fun `Can build a terraform declaration`() {
+    // when
+    val entities = mutableListOf<DeclarationEntity>(
+      DeclarationEntity.Object(
+        "required_providers", mutableListOf(
+          DeclarationEntity.Map<String>(
+            "helm", mutableListOf(
+              DeclarationEntity.Simple("source", "hashicorp/helm"),
+              DeclarationEntity.Simple("version", "2.0.3")
+            )
+          )
+        )
+      )
+    )
+    val declaration = Declaration.Terraform(entities)
+
+    // do
+    val result = declaration.toString()
+
+    // expect
+    val expected = """
+      terraform {
+        required_providers {
+          helm = {
+            source = "hashicorp/helm"
+            version = "2.0.3"
+          }
+        }
       }
     """.trimIndent()
     assertThat(result).isEqualTo(expected)
@@ -220,6 +285,35 @@ internal class DeclarationTest {
     // expect
     val expected = getFileSnapshot("namespace.tf")
     assertThat(result).isEqualTo(expected.trim())
+  }
+
+  @Test
+  fun `Can build providers via DSL`() {
+    // when
+    val manifest = terraformManifest {
+      terraformDeclaration {
+        objectEntity("required_providers") {
+          entityMap<String>("helm") {
+            keyVal("source", "hashicorp/helm")
+            keyVal("version", "2.0.3")
+          }
+          entityMap<String>("kubernetes") {
+            keyVal("source", "hashicorp/kubernetes")
+            keyVal("version", "2.0.3")
+          }
+        }
+      }
+      providerDeclaration("helm") {
+        objectEntity("kubernetes") {
+          keyVal("config_path", "~/.kube/config")
+          keyVal("config_context", "my-cluster")
+        }
+      }
+      providerDeclaration("kubernetes") {
+        keyVal("config_path", "~/.kube/config")
+        keyVal("config_context", "my-cluster")
+      }
+    }
   }
 
 }

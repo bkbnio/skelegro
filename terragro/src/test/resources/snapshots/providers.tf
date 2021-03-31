@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     helm = {
-      source  = "hashicorp/helm"
+      source = "hashicorp/helm"
       version = "2.0.3"
     }
     kubernetes = {
@@ -13,12 +13,12 @@ terraform {
 
 provider "helm" {
   kubernetes {
-    config_path    = "~/.kube/config"
-    config_context = "do-nyc1-backbone-sandbox-cluster" // TODO Make config_context configurable
+    config_path = "~/.kube/config"
+    config_context = "my-cluster"
   }
 }
 
 provider "kubernetes" {
-  config_path    = "~/.kube/config"
-  config_context = "do-nyc1-backbone-sandbox-cluster" // TODO Make config_context configurable
+  config_path = "~/.kube/config"
+  config_context = "my-cluster"
 }
