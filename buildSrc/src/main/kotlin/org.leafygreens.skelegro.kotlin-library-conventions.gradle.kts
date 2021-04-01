@@ -22,7 +22,6 @@ publishing {
   publications {
     create<MavenPublication>("skelegro") {
       from(components["kotlin"])
-      artifact(tasks["build"])
     }
   }
 }
