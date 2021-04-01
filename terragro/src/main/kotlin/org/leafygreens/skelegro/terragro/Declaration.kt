@@ -1,8 +1,7 @@
 package org.leafygreens.skelegro.terragro
 
-import org.leafygreens.skelegro.utils.Constants.TAB
-import org.leafygreens.skelegro.utils.Constants.quoted
-import org.leafygreens.skelegro.utils.EntityBuilder
+import org.leafygreens.skelegro.terragro.Constants.TAB
+import org.leafygreens.skelegro.terragro.Constants.quoted
 
 enum class VariableType(val value: String) {
   STRING("string"),
@@ -10,7 +9,7 @@ enum class VariableType(val value: String) {
   NUMBER("number")
 }
 
-sealed class Declaration : EntityBuilder {
+sealed class Declaration : HCL {
 
   class Variable(
     private val name: String,
@@ -95,7 +94,7 @@ object DeclarationExtensions {
   }
 }
 
-sealed class DeclarationEntity : EntityBuilder {
+sealed class DeclarationEntity : HCL {
 
   class Simple<T>(
     private val key: String,

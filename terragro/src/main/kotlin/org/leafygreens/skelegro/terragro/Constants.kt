@@ -1,4 +1,4 @@
-package org.leafygreens.skelegro.utils
+package org.leafygreens.skelegro.terragro
 
 object Constants {
   const val TAB = "  "

@@ -1,7 +1,3 @@
 plugins {
-  id("org.leafygreens.skelegro.kotlin-library-publish-conventions")
-}
-
-dependencies {
-  api(project(":utils"))
+  id("org.leafygreens.skelegro.kotlin-library-conventions")
 }

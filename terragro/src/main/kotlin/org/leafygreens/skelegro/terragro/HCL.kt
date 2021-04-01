@@ -1,6 +1,6 @@
-package org.leafygreens.skelegro.utils
+package org.leafygreens.skelegro.terragro
 
-interface EntityBuilder {
+interface HCL {
   fun buildEntity(build: StringBuilder.() -> Unit): String {
     val stringBuilder = StringBuilder()
     stringBuilder.build()
