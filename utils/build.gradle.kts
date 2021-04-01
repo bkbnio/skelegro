@@ -1,3 +1,3 @@
 plugins {
-  id("org.leafygreens.skelegro.kotlin-common-conventions")
+  id("org.leafygreens.skelegro.kotlin-library-conventions")
 }
