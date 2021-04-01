@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - March 31st, 2021
+
+### Removed 
+
+- Utils module that was causing way more trouble than it was worth... gradle is a fucking dumpster fire, quote it - [@rgbrizzlehizzle](https://github.com/rgbrizzlehizzle).
+
 ## [0.2.0] - March 31st, 2021
 ### Added
 - MVP For terraform DSL [@rgbrizzlehizzle](https://github.com/rgbrizzlehizzle).
