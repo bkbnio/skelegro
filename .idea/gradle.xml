@@ -14,7 +14,6 @@
             <option value="$PROJECT_DIR$/dockergro" />
             <option value="$PROJECT_DIR$/gradlegro" />
             <option value="$PROJECT_DIR$/terragro" />
-            <option value="$PROJECT_DIR$/utils" />
           </set>
         </option>
       </GradleProjectSettings>
