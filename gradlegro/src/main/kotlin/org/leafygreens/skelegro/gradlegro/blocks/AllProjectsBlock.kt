@@ -12,7 +12,6 @@ class AllProjectsBlock(
     repositories.toString().lines().forEach { appendLine("  $it") }
     appendLine("}")
   }
-
 }
 
 fun BuildGradleKts.allprojects(init: AllProjectsBlock.() -> Unit): AllProjectsBlock {

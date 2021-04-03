@@ -6,7 +6,6 @@ import org.leafygreens.skelegro.gradlegro.blocks.DependenciesBlock
 import org.leafygreens.skelegro.gradlegro.blocks.PluginsBlock
 import org.leafygreens.skelegro.gradlegro.blocks.RepositoriesBlock
 import org.leafygreens.skelegro.gradlegro.blocks.TaskBlock
-import org.leafygreens.skelegro.gradlegro.blocks.allprojects
 import org.leafygreens.skelegro.gradlegro.utils.Helpers.blockBuilder
 import org.leafygreens.skelegro.gradlegro.utils.Helpers.quoted
 
