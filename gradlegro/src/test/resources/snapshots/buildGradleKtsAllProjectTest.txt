@@ -1,0 +1,11 @@
+group = "org.leafygreens"
+version = "0.0.1"
+
+allprojects {
+  repositories {
+    jcenter()
+    maven("https://jitpack.io")
+    github("https://maven.pkg.github.com/rgbrizzlehizzle/blue-whale")
+    mavenLocal()
+  }
+}

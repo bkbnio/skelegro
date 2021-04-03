@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - April 3rd, 2021
+
+### Added
+
+- Oh dude this gradle library is _disgusting_.  Need to come up with a better solution.  Anyways, 
+  I added an `allprojects` block to the gradle build file tool, so that I can setup root functionality 
+  in generated projects.
+
 ## [0.4.0] - April 3rd, 2021
 
 ### Added
