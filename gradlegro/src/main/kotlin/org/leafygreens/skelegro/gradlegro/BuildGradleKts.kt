@@ -1,5 +1,6 @@
 package org.leafygreens.skelegro.gradlegro
 
+import org.leafygreens.skelegro.gradlegro.blocks.AllProjectsBlock
 import org.leafygreens.skelegro.gradlegro.blocks.ApplicationBlock
 import org.leafygreens.skelegro.gradlegro.blocks.DependenciesBlock
 import org.leafygreens.skelegro.gradlegro.blocks.PluginsBlock
@@ -12,6 +13,7 @@ class BuildGradleKts(
   private val group: String,
   private val version: String,
   private val freestyle: String? = null,
+  var allProjectsBlock: AllProjectsBlock? = null,
   var plugins: PluginsBlock? = null,
   var application: ApplicationBlock? = null,
   var repositories: RepositoriesBlock? = null,
@@ -22,15 +24,17 @@ class BuildGradleKts(
     appendLine("group = ${quoted(group)}")
     appendLine("version = ${quoted(version)}")
     appendLine()
-    appendLine(plugins)
+    appendLine(allProjectsBlock ?: "")
     appendLine()
-    appendLine(application)
+    appendLine(plugins ?: "")
     appendLine()
-    appendLine(repositories)
+    appendLine(application ?: "")
     appendLine()
-    appendLine(dependencies)
+    appendLine(repositories ?: "")
     appendLine()
-    appendLine(tasks)
+    appendLine(dependencies ?: "")
+    appendLine()
+    appendLine(tasks ?: "")
     appendLine()
     appendLine(freestyle ?: "")
   }

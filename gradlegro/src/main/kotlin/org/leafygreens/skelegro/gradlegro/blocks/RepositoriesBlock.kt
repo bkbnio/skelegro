@@ -20,4 +20,10 @@ fun BuildGradleKts.repositories(init: RepositoriesBlock.() -> Unit): Repositorie
   return rb
 }
 
+fun AllProjectsBlock.repositories(init: RepositoriesBlock.() -> Unit): RepositoriesBlock {
+  val rb = RepositoriesBlock().apply(init)
+  repositories = rb
+  return rb
+}
+
 fun RepositoriesBlock.add(repository: Repository) = this.repositories.add(repository)

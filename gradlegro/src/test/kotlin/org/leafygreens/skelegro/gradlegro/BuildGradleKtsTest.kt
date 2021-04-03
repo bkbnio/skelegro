@@ -4,6 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.squareup.kotlinpoet.ClassName
 import org.junit.jupiter.api.Test
 import org.leafygreens.skelegro.gradlegro.blocks.add
+import org.leafygreens.skelegro.gradlegro.blocks.allprojects
 import org.leafygreens.skelegro.gradlegro.blocks.application
 import org.leafygreens.skelegro.gradlegro.blocks.buildBlock
 import org.leafygreens.skelegro.gradlegro.blocks.dependencies
@@ -71,6 +72,26 @@ internal class BuildGradleKtsTest {
     }
 
     val expected = getFileSnapshot("buildGradleKtsTest.txt")
+    assertThat(buildFile.toString()).isEqualTo(expected.trim())
+  }
+
+  @Test
+  fun `Can build a gradle file with an all projects block`() {
+    val buildFile = buildGradleKts(
+      group = "org.leafygreens",
+      version = "0.0.1"
+    ) {
+      allprojects {
+        repositories {
+          add(JCENTER)
+          add(CustomRepository("maven", "https://jitpack.io"))
+          add(CustomRepository("github", "https://maven.pkg.github.com/rgbrizzlehizzle/blue-whale"))
+          add(MAVEN_LOCAL)
+        }
+      }
+    }
+
+    val expected = getFileSnapshot("buildGradleKtsAllProjectTest.txt")
     assertThat(buildFile.toString()).isEqualTo(expected.trim())
   }
 }
