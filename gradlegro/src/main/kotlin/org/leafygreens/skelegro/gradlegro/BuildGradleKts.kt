@@ -10,7 +10,7 @@ import org.leafygreens.skelegro.gradlegro.blocks.allprojects
 import org.leafygreens.skelegro.gradlegro.utils.Helpers.blockBuilder
 import org.leafygreens.skelegro.gradlegro.utils.Helpers.quoted
 
-open class BuildGradleKts(
+class BuildGradleKts(
   private val group: String,
   private val version: String,
   private val freestyle: String? = null,
