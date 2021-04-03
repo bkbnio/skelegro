@@ -77,10 +77,7 @@ internal class BuildGradleKtsTest {
 
   @Test
   fun `Can build a gradle file with an all projects block`() {
-    val buildFile = buildGradleKts(
-      group = "org.leafygreens",
-      version = "0.0.1"
-    ) {
+    val buildFile = buildGradleKts() {
       allprojects {
         repositories {
           add(JCENTER)

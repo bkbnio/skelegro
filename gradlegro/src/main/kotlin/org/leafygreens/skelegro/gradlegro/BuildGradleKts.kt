@@ -34,8 +34,8 @@ class BuildGradleKts(
 }
 
 fun buildGradleKts(
-  group: String,
-  version: String,
+  group: String? = null,
+  version: String? = null,
   freestyle: String? = null,
   init: BuildGradleKts.() -> Unit
 ): BuildGradleKts {
