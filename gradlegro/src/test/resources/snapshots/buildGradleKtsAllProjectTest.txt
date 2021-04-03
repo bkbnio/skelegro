@@ -1,5 +1,3 @@
-group = "org.leafygreens"
-version = "0.0.1"
 allprojects {
   repositories {
     jcenter()

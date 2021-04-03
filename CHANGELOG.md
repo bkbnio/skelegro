@@ -6,7 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.5.1] - Aprid 3rd, 2021
+## [0.5.2] - April 3rd, 2021
+
+### Changed
+
+- Dummy McDumbkins over here forgot the DSL function
+
+## [0.5.1] - April 3rd, 2021
 
 ### Changed
 
