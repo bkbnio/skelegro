@@ -15,7 +15,25 @@ internal class SettingGradleKtsTest {
     val result = SettingsGradleKts(projectName)
 
     // assert
-    val expected = Helpers.getFileSnapshot("settingsGradleKts.txt")
+    val expected = Helpers.getFileSnapshot("settingsGradleKtsA.txt")
+    Truth.assertThat(result.toString()).isEqualTo(expected.trim())
+  }
+
+  @Test
+  fun `Can use a DSL to include sub-modules`() {
+    // when
+    val rootName = "starches"
+
+    // do
+    val result = settingsGradleKts(rootName) {
+      include("potato")
+      include("pasta")
+      include("rice")
+      include("bread")
+    }
+
+    // assert
+    val expected = Helpers.getFileSnapshot("settingsGradleKtsB.txt")
     Truth.assertThat(result.toString()).isEqualTo(expected.trim())
   }
 }

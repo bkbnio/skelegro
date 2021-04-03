@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - April 3rd, 2021
+
+### Added
+
+- `settingsGradleKts` DSL to implement `settings.gradle.kts` files in a declarative manner
+- `include` functionality to declare child modules in a gradle project
+
 ## [0.3.0] - March 31st, 2021
 
 ### Removed 

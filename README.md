@@ -12,11 +12,45 @@ would all suffice.
 
 ## Modules
 
-Currently, there are several modules that will generate an assortment of file types.
+### ActionGro
 
-- dockergro -> Docker
-- gradlegro -> Gradle
-- actiongro -> GitHub Actions
-- terragro -> Terraform
+TODO
 
-TODO go into each one in depth with examples
+### DockerGro
+
+TODO
+
+### GradleGro
+
+#### Growing a settings kotlin script
+
+The `settings.gradle.kts` file is relatively bare-bone, and is predominantly used
+to declare the top level settings for a gradle-based repository.  Right now in skelegro,
+functionality is limited to simply declaring a root project name and adding any nested child modules
+
+```kotlin
+val result = settingsGradleKts("starchtopia") {
+  include("potatoville")
+  include("pastaland")
+  include("ricetown")
+  include("new-breadswick")
+}
+```
+
+Would result in a file
+
+```kotlin
+rootProject.name = "starchtopia"
+include("potatoville")
+include("pastaland")
+include("ricetown")
+include("new-breadswick")
+```
+
+#### Growing a build kotlin script
+
+TODO
+
+### TerraGro
+
+TODO
