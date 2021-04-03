@@ -10,8 +10,8 @@ import org.leafygreens.skelegro.gradlegro.utils.Helpers.blockBuilder
 import org.leafygreens.skelegro.gradlegro.utils.Helpers.quoted
 
 class BuildGradleKts(
-  private val group: String,
-  private val version: String,
+  private val group: String? = null,
+  private val version: String? = null,
   private val freestyle: String? = null,
   var allProjectsBlock: AllProjectsBlock? = null,
   var plugins: PluginsBlock? = null,
@@ -21,22 +21,15 @@ class BuildGradleKts(
   var tasks: TaskBlock? = null
 ) {
   override fun toString() = blockBuilder {
-    appendLine("group = ${quoted(group)}")
-    appendLine("version = ${quoted(version)}")
-    appendLine()
-    appendLine(allProjectsBlock ?: "")
-    appendLine()
-    appendLine(plugins ?: "")
-    appendLine()
-    appendLine(application ?: "")
-    appendLine()
-    appendLine(repositories ?: "")
-    appendLine()
-    appendLine(dependencies ?: "")
-    appendLine()
-    appendLine(tasks ?: "")
-    appendLine()
-    appendLine(freestyle ?: "")
+    if (group != null) appendLine("group = ${quoted(group)}")
+    if (version != null) appendLine("version = ${quoted(version)}")
+    if (allProjectsBlock != null) appendLine(allProjectsBlock)
+    if (plugins != null) appendLine(plugins)
+    if (application != null) appendLine(application)
+    if (repositories != null) appendLine(repositories)
+    if (dependencies != null) appendLine(dependencies)
+    if (tasks != null) appendLine(tasks)
+    if (freestyle != null) appendLine(freestyle)
   }
 }
 
