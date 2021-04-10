@@ -20,7 +20,7 @@ import org.leafygreens.skelegro.gradlegro.models.CustomRepository
 import org.leafygreens.skelegro.gradlegro.models.DependencyHandler
 import org.leafygreens.skelegro.gradlegro.models.HandledDependency
 import org.leafygreens.skelegro.gradlegro.models.HandledPlugin
-import org.leafygreens.skelegro.gradlegro.models.JCENTER
+import org.leafygreens.skelegro.gradlegro.models.MAVEN_CENTRAL
 import org.leafygreens.skelegro.gradlegro.models.MAVEN_LOCAL
 import org.leafygreens.skelegro.gradlegro.models.RawPlugin
 import org.leafygreens.skelegro.gradlegro.models.StandardImplementationDependency
@@ -46,7 +46,7 @@ internal class BuildGradleKtsTest {
       }
       application("org.leafygreens.backbone.engine.MainKt")
       repositories {
-        add(JCENTER)
+        add(MAVEN_CENTRAL)
         add(CustomRepository("maven", "https://jitpack.io"))
         add(CustomRepository("github", "https://maven.pkg.github.com/rgbrizzlehizzle/blue-whale"))
         add(MAVEN_LOCAL)
@@ -80,7 +80,7 @@ internal class BuildGradleKtsTest {
     val buildFile = buildGradleKts() {
       allprojects {
         repositories {
-          add(JCENTER)
+          add(MAVEN_CENTRAL)
           add(CustomRepository("maven", "https://jitpack.io"))
           add(CustomRepository("github", "https://maven.pkg.github.com/rgbrizzlehizzle/blue-whale"))
           add(MAVEN_LOCAL)
