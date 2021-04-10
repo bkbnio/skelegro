@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.4] - April 10th, 2021
+
+### Changed
+
+- Gradle 7 RC
+- Removed JCenter in favor of MavenCentral and added explicit kotlinx-html repo... this Bintray dep is gonna fuck everything
+
 ## [0.5.2] - April 3rd, 2021
 
 ### Changed
