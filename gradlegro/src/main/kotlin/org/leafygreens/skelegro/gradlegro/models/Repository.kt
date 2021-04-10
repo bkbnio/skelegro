@@ -12,5 +12,5 @@ class CustomRepository(private val name: String, private val url: String) : Repo
   override fun toString() = "$name(${quoted(url)})"
 }
 
-val JCENTER = StandardRepository("jcenter")
 val MAVEN_LOCAL = StandardRepository("mavenLocal")
+val MAVEN_CENTRAL = StandardRepository("mavenCentral")

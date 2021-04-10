@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - April 10th, 2021
+
+### Removed
+
+- jcenter as an approved gradle repository
+
 ## [0.5.4] - April 10th, 2021
 
 ### Changed
