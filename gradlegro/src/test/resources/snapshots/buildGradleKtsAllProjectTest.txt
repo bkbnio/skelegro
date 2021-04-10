@@ -1,6 +1,6 @@
 allprojects {
   repositories {
-    jcenter()
+    mavenCentral()
     maven("https://jitpack.io")
     github("https://maven.pkg.github.com/rgbrizzlehizzle/blue-whale")
     mavenLocal()

@@ -12,7 +12,7 @@ application {
   mainClassName = "org.leafygreens.backbone.engine.MainKt"
 }
 repositories {
-  jcenter()
+  mavenCentral()
   maven("https://jitpack.io")
   github("https://maven.pkg.github.com/rgbrizzlehizzle/blue-whale")
   mavenLocal()
