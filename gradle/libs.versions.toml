@@ -1,0 +1,19 @@
+[versions]
+kotlin = "1.4.32"
+kotlinx = "1.4.3"
+junit = "5.6.2"
+mockk = "1.10.0"
+truth = "1.0.1"
+kotlinpoet = "1.7.2"
+
+[libraries]
+kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx" }
+kotlinpoet = { group = "com.squareup", name = "kotlinpoet", version.ref = "kotlinpoet" }
+junit-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit" }
+junit-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
+
+[bundles]
+test-impl = [ "junit-api", "mockk", "truth" ]
+test-run = [ "junit-engine" ]

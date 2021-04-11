@@ -10,7 +10,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/actiongro" />
-            <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/dockergro" />
             <option value="$PROJECT_DIR$/gradlegro" />
             <option value="$PROJECT_DIR$/terragro" />

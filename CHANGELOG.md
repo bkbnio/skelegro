@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - April 10th, 2021
+
+### Added
+
+- Gradle 7 Baby 🎉 May it suck less
+
 ## [0.6.0] - April 10th, 2021
 
 ### Removed
