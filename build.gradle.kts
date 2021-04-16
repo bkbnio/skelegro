@@ -69,11 +69,6 @@ allprojects {
         }
       }
     }
-    publications {
-      create<MavenPublication>("skelegro") {
-        from(components["kotlin"])
-      }
-    }
   }
 
   configure<JavaPluginExtension> {

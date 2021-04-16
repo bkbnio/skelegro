@@ -6,9 +6,15 @@ dependencies {
 
   testImplementation(libs.bundles.test.impl)
   testRuntime(libs.bundles.test.run)
+
+  detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.16.0-RC2")
 }
 
-// TODO how to put this in root
-dependencies {
-  detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.16.0-RC2")
+publishing {
+  publications {
+    create<MavenPublication>("actiongro") {
+      from(components["kotlin"])
+      artifact(tasks.sourcesJar)
+    }
+  }
 }
