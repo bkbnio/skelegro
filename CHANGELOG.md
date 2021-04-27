@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.3] - April 27th, 2021
+
+### Added
+
+- Heredoc as supported type for Terraform values
+- PR Template
+
 ## [0.7.2] - April 15th, 2021
 
 ### Added

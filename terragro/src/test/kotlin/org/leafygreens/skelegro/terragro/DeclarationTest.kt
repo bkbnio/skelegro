@@ -353,4 +353,26 @@ internal class DeclarationTest {
     assertThat(result).isEqualTo(expected.trim())
   }
 
+  @Test
+  fun `Can declare a Heredoc value`() {
+    // when
+    val manifest = terraformManifest {
+      resourceDeclaration("vault_generic_secret", "my-secret") {
+        keyVal("data_json", Heredoc("EOF", """
+          {
+            "test": "${'$'}{kubernetes_namespace.vault.count}",
+          }
+        """.trimIndent()))
+        keyVal("path", "important/test")
+      }
+    }
+
+    // do
+    val result = manifest.toString()
+
+    // expect
+    val expected = getFileSnapshot("heredoc.tf")
+    assertThat(result).isEqualTo(expected.trim())
+  }
+
 }
