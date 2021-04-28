@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.4] - April 28th, 2021
+
+### Added
+
+- General HCL entity
+
 ## [0.7.3] - April 27th, 2021
 
 ### Added

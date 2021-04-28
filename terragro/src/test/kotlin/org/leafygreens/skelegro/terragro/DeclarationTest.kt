@@ -1,9 +1,9 @@
 package org.leafygreens.skelegro.terragro
 
 import com.google.common.truth.Truth.assertThat
-import kotlin.math.exp
 import org.junit.jupiter.api.Test
 import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.entityMap
+import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.hcl
 import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.keyVal
 import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.objectEntity
 import org.leafygreens.skelegro.terragro.DeclarationExtensions.providerDeclaration
@@ -67,7 +67,7 @@ internal class DeclarationTest {
     val entities = mutableListOf<DeclarationEntity>(
       DeclarationEntity.Object(
         "required_providers", mutableListOf(
-          DeclarationEntity.Map<String>(
+          DeclarationEntity.Map(
             "helm", mutableListOf(
               DeclarationEntity.Simple("source", "hashicorp/helm"),
               DeclarationEntity.Simple("version", "2.0.3")
@@ -372,6 +372,28 @@ internal class DeclarationTest {
 
     // expect
     val expected = getFileSnapshot("heredoc.tf")
+    assertThat(result).isEqualTo(expected.trim())
+  }
+
+  @Test
+  fun `Can declare a custom backend`() {
+    // when
+    val manifest = terraformManifest {
+      terraformDeclaration {
+        hcl("backend", "remote") {
+          keyVal("organization", "lg-backbone")
+          objectEntity("workspaces") {
+            keyVal("name", "my-amazing-workspace")
+          }
+        }
+      }
+    }
+
+    // do
+    val result = manifest.toString()
+
+    // expect
+    val expected = getFileSnapshot("backend.tf")
     assertThat(result).isEqualTo(expected.trim())
   }
 
