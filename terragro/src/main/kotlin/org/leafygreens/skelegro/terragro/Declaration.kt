@@ -9,7 +9,7 @@ enum class VariableType(val value: String) {
   NUMBER("number")
 }
 
-sealed class Declaration : HCL {
+sealed class Declaration : Entity {
 
   class Variable(
     private val name: String,
@@ -94,7 +94,7 @@ object DeclarationExtensions {
   }
 }
 
-sealed class DeclarationEntity : HCL {
+sealed class DeclarationEntity : Entity {
 
   class Simple<T>(
     private val key: String,
@@ -127,6 +127,15 @@ sealed class DeclarationEntity : HCL {
       appendLine("}")
     }
   }
+
+  class HCL(val type: String, val name: String, var values: MutableList<DeclarationEntity> = mutableListOf()) :
+    DeclarationEntity() {
+    override fun toString() = buildEntity {
+      appendLine("$type ${quoted(name)} {")
+      values.forEach { value -> value.toString().lines().forEach { appendLine("$TAB$it") } }
+      append("}")
+    }
+  }
 }
 
 object DeclarationEntityExtensions {
@@ -140,6 +149,17 @@ object DeclarationEntityExtensions {
     return declarationEntity
   }
 
+  fun Declaration.NestedDeclaration.hcl(
+    type: String,
+    name: String,
+    init: DeclarationEntity.HCL.() -> Unit
+  ): DeclarationEntity.HCL {
+    val declarationEntity = DeclarationEntity.HCL(type, name)
+    declarationEntity.init()
+    entities.add(declarationEntity)
+    return declarationEntity
+  }
+
   fun <T> Declaration.NestedDeclaration.keyVal(key: String, value: T): DeclarationEntity.Simple<T> {
     val entity = DeclarationEntity.Simple(key, value)
     entities.add(entity)
@@ -147,6 +167,12 @@ object DeclarationEntityExtensions {
   }
 
   fun <T> DeclarationEntity.Object.keyVal(key: String, value: T): DeclarationEntity.Simple<T> {
+    val entity = DeclarationEntity.Simple(key, value)
+    values.add(entity)
+    return entity
+  }
+
+  fun <T> DeclarationEntity.HCL.keyVal(key: String, value: T): DeclarationEntity.Simple<T> {
     val entity = DeclarationEntity.Simple(key, value)
     values.add(entity)
     return entity
@@ -171,6 +197,26 @@ object DeclarationEntityExtensions {
 
   // TODO Need DSL Markers
   fun DeclarationEntity.Object.objectEntity(
+    name: String,
+    init: DeclarationEntity.Object.() -> Unit
+  ): DeclarationEntity.Object {
+    val declarationEntity = DeclarationEntity.Object(name)
+    declarationEntity.init()
+    values.add(declarationEntity)
+    return declarationEntity
+  }
+
+  fun <T> DeclarationEntity.HCL.entityMap(
+    name: String,
+    init: DeclarationEntity.Map<T>.() -> Unit
+  ): DeclarationEntity.Map<T> {
+    val entity = DeclarationEntity.Map<T>(name)
+    entity.init()
+    values.add(entity)
+    return entity
+  }
+
+  fun DeclarationEntity.HCL.objectEntity(
     name: String,
     init: DeclarationEntity.Object.() -> Unit
   ): DeclarationEntity.Object {
