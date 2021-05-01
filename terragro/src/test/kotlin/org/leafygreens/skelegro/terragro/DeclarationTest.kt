@@ -6,6 +6,7 @@ import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.entityMap
 import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.hcl
 import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.keyVal
 import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.objectEntity
+import org.leafygreens.skelegro.terragro.DeclarationExtensions.dataDeclaration
 import org.leafygreens.skelegro.terragro.DeclarationExtensions.providerDeclaration
 import org.leafygreens.skelegro.terragro.DeclarationExtensions.resourceDeclaration
 import org.leafygreens.skelegro.terragro.DeclarationExtensions.terraformDeclaration
@@ -397,4 +398,20 @@ internal class DeclarationTest {
     assertThat(result).isEqualTo(expected.trim())
   }
 
+  @Test
+  fun `Can declare a data type`() {
+    // when
+    val manifest = terraformManifest {
+      dataDeclaration("vault_generic_secret", "my_super_secret_data") {
+        keyVal("path", "my/secret/path")
+      }
+    }
+
+    // do
+    val result = manifest.toString()
+
+    // expect
+    val expected = getFileSnapshot("data.tf")
+    assertThat(result).isEqualTo(expected.trim())
+  }
 }
