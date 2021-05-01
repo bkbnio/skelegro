@@ -38,6 +38,18 @@ sealed class Declaration : Entity {
     }
   }
 
+  class Data(
+    private val type: String,
+    private val name: String,
+    override val entities: MutableList<DeclarationEntity> = mutableListOf()
+  ) : NestedDeclaration(entities) {
+    override fun toString() = buildEntity {
+      appendLine("data ${quoted(type)} ${quoted(name)} {")
+      entities.forEach { entity -> entity.toString().lines().forEach { appendLine("$TAB$it") } }
+      appendLine("}")
+    }
+  }
+
   class Provider(
     private val name: String,
     override val entities: MutableList<DeclarationEntity> = mutableListOf()
@@ -74,6 +86,17 @@ object DeclarationExtensions {
     init: Declaration.Resource.() -> Unit
   ): Declaration.Resource {
     val declaration = Declaration.Resource(type, name)
+    declaration.init()
+    declarations.add(declaration)
+    return declaration
+  }
+
+  fun TerraformManifest.dataDeclaration(
+    type: String,
+    name: String,
+    init: Declaration.Data.() -> Unit
+  ): Declaration.Data {
+    val declaration = Declaration.Data(type, name)
     declaration.init()
     declarations.add(declaration)
     return declaration
