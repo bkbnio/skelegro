@@ -39,7 +39,7 @@ resource "kubernetes_deployment" "potato_app" {
           }
           env {
             name = "MY_SPECIAL_ENV_VAR"
-            value = "potato"
+            value = data.vault_generic_secret.credentials.data["token"]
           }
           env {
             name = "GITHUB_TOKEN"
