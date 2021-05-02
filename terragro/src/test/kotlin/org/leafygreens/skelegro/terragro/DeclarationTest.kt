@@ -1,6 +1,7 @@
 package org.leafygreens.skelegro.terragro
 
 import com.google.common.truth.Truth.assertThat
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.entityMap
 import org.leafygreens.skelegro.terragro.DeclarationEntityExtensions.hcl
@@ -187,7 +188,7 @@ internal class DeclarationTest {
       }
       resourceDeclaration("kubernetes_deployment", "potato_app") {
         objectEntity("metadata") {
-          keyVal("name", "potato-app")
+          keyVal("name", FunctionReference("base64decode", DataReference("digitalocean_kubernetes_cluster.cluster.kube_config.0.cluster_ca_certificate")))
           entityMap<String>("labels") {
             keyVal("application", "potato-app")
             keyVal("owner", "big-boss")
@@ -260,7 +261,7 @@ internal class DeclarationTest {
 
     // expect
     val expected = getFileSnapshot("deployment.tf")
-    assertThat(result).isEqualTo(expected.trim())
+    assertEquals(expected.trim(), result)
   }
 
   @Test
