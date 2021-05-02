@@ -261,3 +261,10 @@ class DataReference(private val dataName: String) {
 class ResourceReference(private val resourcePath: String) {
   override fun toString() = resourcePath
 }
+
+class FunctionReference(private val fn: String, private vararg val args: Any) {
+  override fun toString(): String {
+    val guts = arrayOf(*args).map { it.toString() }.joinToString(", ") { it }
+    return "$fn($guts)"
+  }
+}

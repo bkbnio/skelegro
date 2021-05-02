@@ -449,7 +449,7 @@ performance:
     active: true
     excludes: ['**/test/**', '**/testIntegration/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
   SpreadOperator:
-    active: true
+    active: false
     excludes: ['**/test/**', '**/testIntegration/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
   UnnecessaryTemporaryInstantiation:
     active: true

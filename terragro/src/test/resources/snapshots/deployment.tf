@@ -4,7 +4,7 @@ variable "github_token" {
 }
 resource "kubernetes_deployment" "potato_app" {
   metadata {
-    name = "potato-app"
+    name = base64decode(data.digitalocean_kubernetes_cluster.cluster.kube_config.0.cluster_ca_certificate)
     labels = {
       application = "potato-app"
       owner = "big-boss"
