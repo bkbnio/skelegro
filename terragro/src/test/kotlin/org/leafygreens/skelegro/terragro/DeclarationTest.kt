@@ -224,7 +224,7 @@ internal class DeclarationTest {
                 }
                 objectEntity("env") {
                   keyVal("name", "MY_SPECIAL_ENV_VAR")
-                  keyVal("value", "potato")
+                  keyVal("value", DataReference("vault_generic_secret.credentials.data[\"token\"]"))
                 }
                 objectEntity("env") {
                   keyVal("name", "GITHUB_TOKEN")

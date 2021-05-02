@@ -254,6 +254,10 @@ class VariableReference(private val varName: String) {
   override fun toString() = "var.$varName"
 }
 
+class DataReference(private val dataName: String) {
+  override fun toString() = "data.$dataName"
+}
+
 class ResourceReference(private val resourcePath: String) {
   override fun toString() = resourcePath
 }
