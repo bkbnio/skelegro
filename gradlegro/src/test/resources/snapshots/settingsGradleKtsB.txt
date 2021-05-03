@@ -1,5 +1,0 @@
-rootProject.name = "starches"
-include("potato")
-include("pasta")
-include("rice")
-include("bread")
