@@ -1,4 +1,4 @@
-package org.leafygreens.skelegro.gradlegro
+package org.leafygreens.skelegro.gradlegro.utils
 
 class FunctionCall(private val name: String) {
 
@@ -6,10 +6,6 @@ class FunctionCall(private val name: String) {
 
   fun withArguments(vararg args: Any): FunctionCall {
     arguments = args.toList()
-    return this
-  }
-
-  fun withTypeArgs(vararg types: String): FunctionCall {
     return this
   }
 

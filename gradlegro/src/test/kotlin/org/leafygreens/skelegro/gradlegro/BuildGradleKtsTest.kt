@@ -3,6 +3,9 @@ package org.leafygreens.skelegro.gradlegro
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.leafygreens.skelegro.gradlegro.util.Helpers.getFileSnapshot
+import org.leafygreens.skelegro.gradlegro.utils.EnumReference
+import org.leafygreens.skelegro.gradlegro.utils.FunctionCall
+import org.leafygreens.skelegro.gradlegro.utils.NamedParameter
 
 internal class BuildGradleKtsTest {
 
