@@ -96,4 +96,18 @@ internal class BuildGradleKtsTest {
     assertEquals(expected, buildScript.toString().trim())
   }
 
+  @Test
+  fun `Can build a settings gradle kts file`() {
+    // when
+    val settingsFile = buildGradleKts {
+      "rootProject.name" eq "skelegro"
+      +fn("include", "dockergro", "gradlegro", "actiongro", "terragro")
+      +fn("enableFeaturePreview", "VERSION_CATALOGS")
+    }
+
+    // expect
+    val expected = getFileSnapshot("ExampleSettingsFile.txt")
+    assertEquals(expected, settingsFile.toString().trim())
+  }
+
 }
