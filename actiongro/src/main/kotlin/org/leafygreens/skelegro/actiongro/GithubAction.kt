@@ -32,6 +32,10 @@ class GithubAction {
     return this
   }
 
+  operator fun String.unaryPlus() {
+    this.lines().forEach { sb.appendIndented(it) }
+  }
+
   override fun toString() = sb.toString()
   private fun StringBuilder.appendIndented(value: Any) = appendLine("${addIndent(level)}$value")
 }
