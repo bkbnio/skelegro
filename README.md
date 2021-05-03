@@ -14,7 +14,92 @@ would all suffice.
 
 ### ActionGro
 
-TODO
+The following example maps to a test yaml file that can be found in the test resources of the `actiongro` source code
+
+```kotlin
+val manifest = githubAction {
+  "name" eq "Build and Deploy"
+  "on" block {
+    "push" block {
+      "branches" block {
+        - "main"
+      }
+    }
+  }
+  "env" block {
+    "ACTOR" eq "\${{ github.actor }}"
+    "SECRET" eq "\${{ github.secret }}"
+  }
+  "jobs" block {
+    "assemble" block {
+      "runs-on" eq "ubuntu-latest"
+      "steps" block {
+        - ("uses" req "actions/checkout@v2")
+        - ("uses" req "actions/setup-java@v1")
+        indent {
+          "with" block {
+            "java-version" eq "1.14"
+          }
+        }
+        - ("name" req "Cache Gradle Packages")
+        indent {
+          "uses" eq "actions/cache@v2"
+          "with" block {
+            "path" eq "~/.gradle/caches"
+            "key" eq "\${{ runner.os }}-gradle-\${{ hashFiles('**/*.gradle.kts') }}"
+            "restore-keys" eq "\${{ runner.os }}-gradle"
+          }
+        }
+        - ("name" req "Assemble Gradle")
+        indent {
+          "run" eq "gradle assemble"
+        }
+      }
+    }
+    "publish-kotlin-images" block {
+      "runs-on" eq "ubuntu-latest"
+      "needs" block {
+        - "assemble"
+      }
+      "steps" block {
+        - ("uses" req "actions/checkout@v2")
+        - ("uses" req "actions/setup-java@v1")
+        indent {
+          "with" block {
+            "java-version" eq "1.14"
+          }
+        }
+        - ("name" req "Docker Login")
+        indent {
+          "uses" eq "docker/login-action@v1"
+          "with" block {
+            "registry" eq "ghcr.io"
+            "username" eq "\${{ secrets.ACTOR }}"
+            "password" eq "\${{ secrets.SECRET }}"
+          }
+        }
+        - ("name" req "Cache Gradle Packages")
+        indent {
+          "uses" eq "actions/cache@v2"
+          "with" block {
+            "path" eq "~/.gradle/caches"
+            "key" eq "\${{ runner.os }}-gradle-\${{ hashFiles('**/*.gradle.kts') }}"
+            "restore-keys" eq "\${{ runner.os }}-gradle"
+          }
+        }
+        - ("name" req "Builds image and tags for github packages repo")
+        indent {
+          "run" eq "./gradlew dockerTagGithubPackages"
+        }
+        - ("name" req "Pushes image to github package repo")
+        indent {
+          "run" eq "./gradlew dockerPushGithubPackages --parallel"
+        }
+      }
+    }
+  }
+}
+```
 
 ### DockerGro
 
@@ -106,8 +191,6 @@ val buildScript = buildGradleKts {
   }
 }
 ```
-
-TODO
 
 ### TerraGro
 

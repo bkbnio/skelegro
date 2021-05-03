@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 As of version 0.8.0, all breaking changes are marked with 🚨
 
+## [0.9.0] - May 3rd, 2021
+
+### Changed
+
+- 🚨 Complete re-haul of the `ActionGro` DSL.  Much like the gradle refactor, scraps the super brittle V1 for a simple, highly extensible DSL.
+
 ## [0.8.0] - May 3rd, 2021
 
 ### Changed
