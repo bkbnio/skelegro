@@ -2,71 +2,91 @@ package org.leafygreens.skelegro.actiongro
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.leafygreens.skelegro.actiongro.ActionEntityExtensions.arrayEntity
-import org.leafygreens.skelegro.actiongro.ActionEntityExtensions.nestedEntities
-import org.leafygreens.skelegro.actiongro.ActionEntityExtensions.nestedEntity
-import org.leafygreens.skelegro.actiongro.ActionEntityExtensions.stringEntity
-import org.leafygreens.skelegro.actiongro.TestData.getFileSnapshot
+import org.leafygreens.skelegro.actiongro.utils.Helpers.getFileSnapshot
 
 internal class GithubActionTest {
 
   @Test
-  fun `Can build a file that will kick of a github action to assemble a gradle package`() {
+  fun `Can build a github action manifest with multiple jobs`() {
     // when
-    val action = githubAction {
-      stringEntity {
-        key = "name"
-        value = "Testing"
-      }
-      nestedEntity {
-        key = "on"
-        value = nestedEntity {
-          key = "push"
-          value = arrayEntity<String> {
-            key = "branches"
-            values = mutableListOf(Pair("main", true))
+    val manifest = githubAction {
+      "name" eq "Build and Deploy"
+      "on" block {
+        "push" block {
+          "branches" block {
+            - "main"
           }
         }
       }
-      nestedEntities {
-        key = "env"
-        stringEntity {
-          key = "GITHUB_USER"
-          value = "\${{ github.actor }}"
-        }
-        stringEntity {
-          key = "GITHUB_TOKEN"
-          value = "\${{ secrets.GITHUB_TOKEN }}"
-        }
+      "env" block {
+        "ACTOR" eq "\${{ github.actor }}"
+        "SECRET" eq "\${{ github.secret }}"
       }
-      nestedEntity {
-        key = "jobs"
-        value = nestedEntities {
-          key = "assemble"
-          stringEntity {
-            key = "runs-on"
-            value = "ubuntu-latest"
+      "jobs" block {
+        "assemble" block {
+          "runs-on" eq "ubuntu-latest"
+          "steps" block {
+            - ("uses" req "actions/checkout@v2")
+            - ("uses" req "actions/setup-java@v1")
+            indent {
+              "with" block {
+                "java-version" eq "1.14"
+              }
+            }
+            - ("name" req "Cache Gradle Packages")
+            indent {
+              "uses" eq "actions/cache@v2"
+              "with" block {
+                "path" eq "~/.gradle/caches"
+                "key" eq "\${{ runner.os }}-gradle-\${{ hashFiles('**/*.gradle.kts') }}"
+                "restore-keys" eq "\${{ runner.os }}-gradle"
+              }
+            }
+            - ("name" req "Assemble Gradle")
+            indent {
+              "run" eq "gradle assemble"
+            }
           }
-          arrayEntity<ActionEntity> {
-            key = "steps"
-            values = mutableListOf(
-              Pair(ActionEntity.StringEntity("uses", "actions/checkout@v2"), true),
-              Pair(ActionEntity.StringEntity("uses", "actions/setup-java@v1"), true),
-              Pair(ActionEntity.NestedEntity("with", ActionEntity.StringEntity("java-version", "1.14")), false),
-              Pair(ActionEntity.StringEntity("name", "Cache Gradle Packages"), true),
-              Pair(ActionEntity.StringEntity("uses", "actions/cache@v2"), false),
-              Pair(
-                ActionEntity.NestedEntities(
-                  "with", mutableListOf(
-                    ActionEntity.StringEntity("path", "~/.gradle/caches"),
-                    ActionEntity.StringEntity("key", "\${{ runner.os }}-gradle-\${{ hashFiles('**/*.gradle.kts') }}"),
-                    ActionEntity.StringEntity("restore-keys", "\${{ runner.os }}-gradle")
-                  )
-                ), false
-              ),
-              Pair(ActionEntity.StringEntity("name", "Assemble Gradle"), true),
-              Pair(ActionEntity.StringEntity("run", "gradle assemble"), false)
-            )
+        }
+        "publish-kotlin-images" block {
+          "runs-on" eq "ubuntu-latest"
+          "needs" block {
+            - "assemble"
+          }
+          "steps" block {
+            - ("uses" req "actions/checkout@v2")
+            - ("uses" req "actions/setup-java@v1")
+            indent {
+              "with" block {
+                "java-version" eq "1.14"
+              }
+            }
+            - ("name" req "Docker Login")
+            indent {
+              "uses" eq "docker/login-action@v1"
+              "with" block {
+                "registry" eq "ghcr.io"
+                "username" eq "\${{ secrets.ACTOR }}"
+                "password" eq "\${{ secrets.SECRET }}"
+              }
+            }
+            - ("name" req "Cache Gradle Packages")
+            indent {
+              "uses" eq "actions/cache@v2"
+              "with" block {
+                "path" eq "~/.gradle/caches"
+                "key" eq "\${{ runner.os }}-gradle-\${{ hashFiles('**/*.gradle.kts') }}"
+                "restore-keys" eq "\${{ runner.os }}-gradle"
+              }
+            }
+            - ("name" req "Builds image and tags for github packages repo")
+            indent {
+              "run" eq "./gradlew dockerTagGithubPackages"
+            }
+            - ("name" req "Pushes image to github package repo")
+            indent {
+              "run" eq "./gradlew dockerPushGithubPackages --parallel"
+            }
           }
         }
       }
@@ -74,7 +94,7 @@ internal class GithubActionTest {
 
     // expect
     val expected = getFileSnapshot("GradleAssembleExample.yaml")
-    assertEquals(action.toString().trim(), expected.trim())
+    assertEquals(expected, manifest.toString().trim())
   }
 
 }
