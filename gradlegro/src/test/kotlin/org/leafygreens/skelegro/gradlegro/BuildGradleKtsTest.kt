@@ -1,94 +1,113 @@
 package org.leafygreens.skelegro.gradlegro
 
-import com.google.common.truth.Truth.assertThat
-import com.squareup.kotlinpoet.ClassName
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.leafygreens.skelegro.gradlegro.blocks.add
-import org.leafygreens.skelegro.gradlegro.blocks.allprojects
-import org.leafygreens.skelegro.gradlegro.blocks.application
-import org.leafygreens.skelegro.gradlegro.blocks.buildBlock
-import org.leafygreens.skelegro.gradlegro.blocks.dependencies
-import org.leafygreens.skelegro.gradlegro.blocks.dependsOn
-import org.leafygreens.skelegro.gradlegro.blocks.kotlinOptions
-import org.leafygreens.skelegro.gradlegro.blocks.named
-import org.leafygreens.skelegro.gradlegro.blocks.plugins
-import org.leafygreens.skelegro.gradlegro.blocks.repositories
-import org.leafygreens.skelegro.gradlegro.blocks.shadow
-import org.leafygreens.skelegro.gradlegro.blocks.tasks
-import org.leafygreens.skelegro.gradlegro.blocks.withType
-import org.leafygreens.skelegro.gradlegro.models.CustomRepository
-import org.leafygreens.skelegro.gradlegro.models.DependencyHandler
-import org.leafygreens.skelegro.gradlegro.models.HandledDependency
-import org.leafygreens.skelegro.gradlegro.models.HandledPlugin
-import org.leafygreens.skelegro.gradlegro.models.MAVEN_CENTRAL
-import org.leafygreens.skelegro.gradlegro.models.MAVEN_LOCAL
-import org.leafygreens.skelegro.gradlegro.models.RawPlugin
-import org.leafygreens.skelegro.gradlegro.models.StandardImplementationDependency
-import org.leafygreens.skelegro.gradlegro.models.StandardPlugin
-import org.leafygreens.skelegro.gradlegro.models.StandardTestImplementationDependency
 import org.leafygreens.skelegro.gradlegro.util.Helpers.getFileSnapshot
+import org.leafygreens.skelegro.gradlegro.utils.EnumReference
+import org.leafygreens.skelegro.gradlegro.utils.FunctionCall
+import org.leafygreens.skelegro.gradlegro.utils.NamedParameter
 
 internal class BuildGradleKtsTest {
 
   @Test
-  fun `Can build a gradle file that I want it to`() {
-    val kotlinVersion = "1.4.21"
-    val buildFile = buildGradleKts(
-      group = "org.leafygreens",
-      version = "0.0.1",
-    ) {
-      plugins {
-        add(HandledPlugin("jvm", kotlinVersion))
-        add(HandledPlugin("kapt", kotlinVersion))
-        add(StandardPlugin("com.github.johnrengelman.shadow", "6.0.0"))
-        add(RawPlugin("application"))
-        add(RawPlugin("maven"))
+  fun `Can build a gradle script equivalent to the root project build file`() {
+    // when
+    val buildScript = buildGradleKts {
+      "plugins" block {
+        +(fn("id", "org.jetbrains.kotlin.jvm") version "1.4.32" apply false)
+        +(fn("id", "io.gitlab.arturbosch.detekt") version "1.16.0-RC2" apply false)
+        +(fn("id", "com.adarshr.test-logger") version "3.0.0" apply false)
       }
-      application("org.leafygreens.backbone.engine.MainKt")
-      repositories {
-        add(MAVEN_CENTRAL)
-        add(CustomRepository("maven", "https://jitpack.io"))
-        add(CustomRepository("github", "https://maven.pkg.github.com/rgbrizzlehizzle/blue-whale"))
-        add(MAVEN_LOCAL)
-      }
-      dependencies {
-        add(DependencyHandler("kotlin", "stdlib"))
-        add(StandardImplementationDependency("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2"))
-        add(DependencyHandler("platform", "software.amazon.awssdk:bom:2.14.9"))
-        add(HandledDependency("software.amazon.awssdk", "s3"))
-        add(StandardTestImplementationDependency("org.junit.jupiter", "junit-jupiter", "5.6.2"))
-      }
-      tasks {
-        buildBlock {
-          dependsOn("shadowJar")
+      `---`()
+      "allprojects" block {
+        "group" eq "org.leafygreens"
+        "version" eq "0.0.1"
+        `---`()
+        "repositories" block {
+          "maven" block {
+            "url" eq FunctionCall("uri").withArguments("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
+          }
+          +fn("mavenCentral")
         }
-        withType(ClassName("org.jetbrains.kotlin.gradle.tasks", "KotlinCompile")) {
-          kotlinOptions("14")
+        `---`()
+        +fn("apply", NamedParameter("plugin", "org.jetbrains.kotlin.jvm"))
+        +fn("apply", NamedParameter("plugin", "io.gitlab.arturbosch.detekt"))
+        +fn("apply", NamedParameter("plugin", "com.adarshr.test-logger"))
+        +fn("apply", NamedParameter("plugin", "java-library"))
+        +fn("apply", NamedParameter("plugin", "maven-publish"))
+        +fn("apply", NamedParameter("plugin", "idea"))
+        `---`()
+        fn("tasks.withType<Test>") block {
+          +fn("useJUnitPlatform")
         }
-        named(ClassName("com.github.jengelman.gradle.plugins.shadow.tasks", "ShadowJar")) {
-          shadow()
+        `---`()
+        "configure<com.adarshr.gradle.testlogger.TestLoggerExtension>" block {
+          "theme" eq EnumReference("com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA")
+          "logLevel" eq EnumReference("LogLevel.LIFECYCLE")
+          "showExceptions" eq true
+          "showStackTraces" eq true
+          "showFullStackTraces" eq false
+          "showCauses" eq true
+          "slowThreshold" eq 2000
+          "showSummary" eq true
+          "showSimpleNames" eq false
+          "showPassed" eq true
+          "showSkipped" eq true
+          "showFailed" eq true
+          "showStandardStreams" eq false
+          "showPassedStandardStreams" eq true
+          "showSkippedStandardStreams" eq true
+          "showFailedStandardStreams" eq true
+        }
+        `---`()
+        fn("tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>").plus(".configureEach") block {
+          "kotlinOptions" block {
+            "jvmTarget" eq "14"
+          }
+        }
+        `---`()
+        "configure<io.gitlab.arturbosch.detekt.extensions.DetektExtension>" block {
+          "toolVersion" eq "1.16.0-RC2"
+          "config" eq FunctionCall("files").withArguments("\${rootProject.projectDir}/detekt.yml")
+          "buildUponDefaultConfig" eq true
+        }
+        `---`()
+        "configure<PublishingExtension>" block {
+          "repositories" block {
+            "maven" block {
+              "name" eq "GithubPackages"
+              "url" eq FunctionCall("uri").withArguments("https://maven.pkg.github.com/lg-backbone/skelegro")
+              "credentials" block {
+                "username" eq FunctionCall("System.getenv").withArguments("GITHUB_ACTOR")
+                "password" eq FunctionCall("System.getenv").withArguments("GITHUB_TOKEN")
+              }
+            }
+          }
+        }
+        `---`()
+        "configure<JavaPluginExtension>" block {
+          +fn("withSourcesJar")
         }
       }
     }
 
-    val expected = getFileSnapshot("buildGradleKtsTest.txt")
-    assertThat(buildFile.toString()).isEqualTo(expected.trim())
+    // expect
+    val expected = getFileSnapshot("ExampleRootBuildScript.txt")
+    assertEquals(expected, buildScript.toString().trim())
   }
 
   @Test
-  fun `Can build a gradle file with an all projects block`() {
-    val buildFile = buildGradleKts() {
-      allprojects {
-        repositories {
-          add(MAVEN_CENTRAL)
-          add(CustomRepository("maven", "https://jitpack.io"))
-          add(CustomRepository("github", "https://maven.pkg.github.com/rgbrizzlehizzle/blue-whale"))
-          add(MAVEN_LOCAL)
-        }
-      }
+  fun `Can build a settings gradle kts file`() {
+    // when
+    val settingsFile = buildGradleKts {
+      "rootProject.name" eq "skelegro"
+      +fn("include", "dockergro", "gradlegro", "actiongro", "terragro")
+      +fn("enableFeaturePreview", "VERSION_CATALOGS")
     }
 
-    val expected = getFileSnapshot("buildGradleKtsAllProjectTest.txt")
-    assertThat(buildFile.toString()).isEqualTo(expected.trim())
+    // expect
+    val expected = getFileSnapshot("ExampleSettingsFile.txt")
+    assertEquals(expected, settingsFile.toString().trim())
   }
+
 }

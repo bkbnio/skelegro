@@ -6,17 +6,12 @@ plugins {
 
 allprojects {
   group = "org.leafygreens"
-  version = run {
-    val baseVersion =
-      project.findProperty("project.version") ?: error("project.version must be set in gradle.properties")
-    when ((project.findProperty("release") as? String)?.toBoolean()) {
-      true -> baseVersion
-      else -> "$baseVersion-SNAPSHOT"
-    }
-  }
+  version = "0.0.1"
 
   repositories {
-    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven") }
+    maven {
+      url = uri("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
+    }
     mavenCentral()
   }
 

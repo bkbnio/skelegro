@@ -1,45 +1,55 @@
 package org.leafygreens.skelegro.gradlegro
 
-import org.leafygreens.skelegro.gradlegro.blocks.AllProjectsBlock
-import org.leafygreens.skelegro.gradlegro.blocks.ApplicationBlock
-import org.leafygreens.skelegro.gradlegro.blocks.DependenciesBlock
-import org.leafygreens.skelegro.gradlegro.blocks.PluginsBlock
-import org.leafygreens.skelegro.gradlegro.blocks.RepositoriesBlock
-import org.leafygreens.skelegro.gradlegro.blocks.TaskBlock
-import org.leafygreens.skelegro.gradlegro.utils.Helpers.blockBuilder
-import org.leafygreens.skelegro.gradlegro.utils.Helpers.quoted
+import org.leafygreens.skelegro.gradlegro.utils.FunctionCall
 
-class BuildGradleKts(
-  private val group: String? = null,
-  private val version: String? = null,
-  private val freestyle: String? = null,
-  var allProjectsBlock: AllProjectsBlock? = null,
-  var plugins: PluginsBlock? = null,
-  var application: ApplicationBlock? = null,
-  var repositories: RepositoriesBlock? = null,
-  var dependencies: DependenciesBlock? = null,
-  var tasks: TaskBlock? = null
-) {
-  override fun toString() = blockBuilder {
-    if (group != null) appendLine("group = ${quoted(group)}")
-    if (version != null) appendLine("version = ${quoted(version)}")
-    if (allProjectsBlock != null) appendLine(allProjectsBlock)
-    if (plugins != null) appendLine(plugins)
-    if (application != null) appendLine(application)
-    if (repositories != null) appendLine(repositories)
-    if (dependencies != null) appendLine(dependencies)
-    if (tasks != null) appendLine(tasks)
-    if (freestyle != null) appendLine(freestyle)
+class BuildGradleKts {
+
+  companion object {
+    private const val TAB = "  "
   }
+
+  private fun addIndent(level: Int): String = TAB.repeat(level)
+
+  private val sb = StringBuilder()
+  private var level = 0
+
+  infix fun String.eq(value: Any) = when (value) {
+    is String -> sb.appendIndented("$this = \"$value\"")
+    else -> sb.appendIndented("$this = $value")
+  }
+
+  infix fun String.block(block: () -> Unit): String {
+    sb.appendIndented("$this {")
+    level++
+    block.invoke()
+    level--
+    sb.appendIndented("}")
+    return this
+  }
+
+  operator fun String.unaryPlus() {
+    sb.appendIndented(this)
+  }
+
+  fun `---`() {
+    sb.appendLine()
+  }
+
+  infix fun String.version(v: String) = "$this version \"$v\""
+
+  infix fun String.apply(a: Boolean) = "$this apply $a"
+
+  fun fn(name: String, vararg args: Any): String = FunctionCall(name).withArguments(*args).toString()
+
+  override fun toString() = sb.toString()
+
+  private fun StringBuilder.appendIndented(value: Any) = appendLine("${addIndent(level)}$value")
 }
 
 fun buildGradleKts(
-  group: String? = null,
-  version: String? = null,
-  freestyle: String? = null,
   init: BuildGradleKts.() -> Unit
 ): BuildGradleKts {
-  val bgk = BuildGradleKts(group, version, freestyle)
+  val bgk = BuildGradleKts()
   bgk.init()
   return bgk
 }
