@@ -25,6 +25,10 @@ class TerraformManifest {
     return this
   }
 
+  fun `---`() {
+    sb.appendLine()
+  }
+
   override fun toString() = sb.toString()
 
   private fun addIndent(level: Int): String = TAB.repeat(level)
@@ -39,13 +43,8 @@ fun terraformManifest(init: TerraformManifest.() -> Unit): TerraformManifest {
 
 fun main() {
   val test = terraformManifest {
-    "terraform" block {
-      "backend" label "remote" block {
-        "organization" eq "lg-backbone"
-        "workspaces" block {
-          "name" eq "my-amazing-workspace"
-        }
-      }
+    "data" label "vault_generic_secret" label "my_super_secret_data" block {
+      "path" eq "my/secret/path"
     }
   }
   println(test.toString())

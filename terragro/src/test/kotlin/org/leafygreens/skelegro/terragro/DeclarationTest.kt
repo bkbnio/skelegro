@@ -384,6 +384,7 @@ internal class DeclarationTest {
       "terraform" block {
         "backend" label "remote" block {
           "organization" eq "lg-backbone"
+          `---`()
           "workspaces" block {
             "name" eq "my-amazing-workspace"
           }
@@ -403,8 +404,8 @@ internal class DeclarationTest {
   fun `Can declare a data type`() {
     // when
     val manifest = terraformManifest {
-      dataDeclaration("vault_generic_secret", "my_super_secret_data") {
-        keyVal("path", "my/secret/path")
+      "data" label "vault_generic_secret" label "my_super_secret_data" block {
+        "path" eq "my/secret/path"
       }
     }
 
