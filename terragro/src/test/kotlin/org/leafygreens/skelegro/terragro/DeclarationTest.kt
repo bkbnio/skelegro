@@ -13,6 +13,7 @@ import org.leafygreens.skelegro.terragro.DeclarationExtensions.resourceDeclarati
 import org.leafygreens.skelegro.terragro.DeclarationExtensions.terraformDeclaration
 import org.leafygreens.skelegro.terragro.DeclarationExtensions.variableDeclaration
 import org.leafygreens.skelegro.terragro.TestData.getFileSnapshot
+import org.leafygreens.skelegro.terragro.utils.FunctionCall
 
 internal class DeclarationTest {
 
@@ -182,72 +183,73 @@ internal class DeclarationTest {
   fun `Can build a full deployment manifest`() {
     // when
     val manifest = terraformManifest {
-      variableDeclaration("github_token") {
-        type = VariableType.STRING
-        sensitive = true
+      "variable" label "github_token" block {
+        "type" eq HclType.STRING
+        "sensitive" eq true
       }
-      resourceDeclaration("kubernetes_deployment", "potato_app") {
-        objectEntity("metadata") {
-          keyVal("name", FunctionReference("base64decode", DataReference("digitalocean_kubernetes_cluster.cluster.kube_config.0.cluster_ca_certificate")))
-          entityMap<String>("labels") {
-            keyVal("application", "potato-app")
-            keyVal("owner", "big-boss")
+      `---`()
+      "resource" label "kubernetes_deployment" label "potato_app" block {
+        "metadata" block {
+          "name" eq FunctionCall("base64decode").withArguments(
+            Reference("data", "digitalocean_kubernetes_cluster", "cluster", "kube_config", 0, "cluster_ca_certificate")
+          )
+          "labels" eqBlock {
+            "application" eq "potato-app"
+            "owner" eq "big-boss"
           }
         }
-
-        objectEntity("spec") {
-          keyVal("replicas", 3)
-
-          objectEntity("selector") {
-            entityMap<String>("match_labels") {
-              keyVal("application", "potato-app")
-              keyVal("owner", "big-boss")
+        "spec" block {
+          "replicas" eq 3
+          "selector" block {
+            "match_labels" eqBlock {
+              "application" eq "potato-app"
+              "owner" eq "big-boss"
             }
           }
-          objectEntity("template") {
-            objectEntity("metadata") {
-              entityMap<String>("labels") {
-                keyVal("application", "potato-app")
-                keyVal("owner", "big-boss")
+          "template" block {
+            "metadata" block {
+              "labels" eqBlock {
+                "application" eq "potato-app"
+                "owner" eq "big-boss"
               }
             }
-            objectEntity("spec") {
-              objectEntity("image_pull_secrets") {
-                keyVal("name", "ghcr")
+            "spec" block {
+              "image_pull_secrets" block {
+                "name" eq "ghcr"
               }
-              objectEntity("container") {
-                keyVal("image", "my-image:latest")
-                keyVal("name", "potato-app")
-                keyVal("image_pull_policy", "Always")
-                objectEntity("port") {
-                  keyVal("container_port", 8080)
-                  keyVal("protocol", "TCP")
+              "container" block {
+                "image" eq "my-image:latest"
+                "name" eq "potato-app"
+                "image_pull_policy" eq "Always"
+                "port" block {
+                  "container_port" eq 8080
+                  "protocol" eq "TCP"
                 }
-                objectEntity("env") {
-                  keyVal("name", "MY_SPECIAL_ENV_VAR")
-                  keyVal("value", DataReference("vault_generic_secret.credentials.data[\"token\"]"))
+                "env" block {
+                  "name" eq "MY_SPECIAL_ENV_VAR"
+                  "value" eq Reference("data", "vault_generic_secret", "credentials", "data[\"token\"]")
                 }
-                objectEntity("env") {
-                  keyVal("name", "GITHUB_TOKEN")
-                  keyVal("value", VariableReference("github_token"))
+                "env" block {
+                  "name" eq "GITHUB_TOKEN"
+                  "value" eq Reference("var", "github_token")
                 }
-                objectEntity("resources") {
-                  entityMap<String>("limits") {
-                    keyVal("cpu", "1")
-                    keyVal("memory", "1024Mi")
+                "resources" block {
+                  "limits" eqBlock {
+                    "cpu" eq "1"
+                    "memory" eq "1024Mi"
                   }
-                  entityMap<String>("requests") {
-                    keyVal("cpu", "0.5")
-                    keyVal("memory", "512Mi")
+                  "requests" eqBlock {
+                    "cpu" eq "0.5"
+                    "memory" eq "512Mi"
                   }
                 }
-                objectEntity("liveness_probe") {
-                  objectEntity("http_get") {
-                    keyVal("path", "/")
-                    keyVal("port", 8080)
+                "liveness_probe" block {
+                  "http_get" block {
+                    "path" eq "/"
+                    "port" eq 8080
                   }
-                  keyVal("initial_delay_seconds", 30)
-                  keyVal("period_seconds", 30)
+                  "initial_delay_seconds" eq 30
+                  "period_seconds" eq 30
                 }
               }
             }
