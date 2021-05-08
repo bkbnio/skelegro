@@ -1,9 +1,5 @@
 package org.leafygreens.skelegro.terragro
 
-import org.leafygreens.skelegro.terragro.utils.FunctionCall
-import org.leafygreens.skelegro.terragro.utils.Heredoc
-import org.leafygreens.skelegro.terragro.utils.Reference
-
 class TerraformManifest {
 
   companion object {
@@ -52,25 +48,4 @@ fun terraformManifest(init: TerraformManifest.() -> Unit): TerraformManifest {
   val manifest = TerraformManifest()
   manifest.init()
   return manifest
-}
-
-fun main() {
-  val test = terraformManifest {
-    "resource" label "kubernetes_service" label "my_service" block {
-      "metadata" block {
-        "name" eq "my-service"
-      }
-      "spec" block {
-        "selector" eqBlock {
-          "application" eq Reference("kubernetes_deployment", "my_app", "metadata", 0, "labels", "application")
-          "owner" eq Reference("kubernetes_deployment", "my_app", "metadata", 0, "labels", "owner")
-        }
-        "port" block {
-          "port" eq 80
-          "target_port" eq 8080
-        }
-      }
-    }
-  }
-  println(test.toString())
 }

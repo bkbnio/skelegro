@@ -47,7 +47,7 @@ resource "kubernetes_deployment" "potato_app" {
             value = var.github_token
           }
           resources {
-            limit = {
+            limits = {
               cpu = "1"
               memory = "1024Mi"
             }
