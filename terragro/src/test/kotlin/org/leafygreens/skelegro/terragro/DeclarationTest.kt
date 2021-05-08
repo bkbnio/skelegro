@@ -298,27 +298,29 @@ internal class DeclarationTest {
   fun `Can build providers via DSL`() {
     // when
     val manifest = terraformManifest {
-      terraformDeclaration {
-        objectEntity("required_providers") {
-          entityMap<String>("helm") {
-            keyVal("source", "hashicorp/helm")
-            keyVal("version", "2.0.3")
+      "terraform" block {
+        "required_providers" block {
+          "helm" eqBlock {
+            "source" eq "hashicorp/helm"
+            "version" eq "2.0.3"
           }
-          entityMap<String>("kubernetes") {
-            keyVal("source", "hashicorp/kubernetes")
-            keyVal("version", "2.0.3")
+          "kubernetes" eqBlock {
+            "source" eq "hashicorp/kubernetes"
+            "version" eq "2.0.3"
           }
         }
       }
-      providerDeclaration("helm") {
-        objectEntity("kubernetes") {
-          keyVal("config_path", "~/.kube/config")
-          keyVal("config_context", "my-cluster")
+      `---`()
+      "provider" label "helm" block {
+        "kubernetes" block {
+          "config_path" eq "~/.kube/config"
+          "config_context" eq "my-cluster"
         }
       }
-      providerDeclaration("kubernetes") {
-        keyVal("config_path", "~/.kube/config")
-        keyVal("config_context", "my-cluster")
+      `---`()
+      "provider" label "kubernetes" block {
+        "config_path" eq "~/.kube/config"
+        "config_context" eq "my-cluster"
       }
     }
 
@@ -334,18 +336,18 @@ internal class DeclarationTest {
   fun `Can build a service via DSL with a resource reference`() {
     // when
     val manifest = terraformManifest {
-      resourceDeclaration("kubernetes_service", "my_service") {
-        objectEntity("metadata") {
-          keyVal("name", "my-service")
+      "resource" label "kubernetes_service" label "my_service" block {
+        "metadata" block {
+          "name" eq "my-service"
         }
-        objectEntity("spec") {
-          entityMap<ResourceReference>("selector") {
-            keyVal("application", ResourceReference("kubernetes_deployment.my_app.metadata.0.labels.application"))
-            keyVal("owner", ResourceReference("kubernetes_deployment.my_app.metadata.0.labels.owner"))
+        "spec" block {
+          "selector" eqBlock {
+            "application" eq Reference("kubernetes_deployment", "my_app", "metadata", 0, "labels", "application")
+            "owner" eq Reference("kubernetes_deployment", "my_app", "metadata", 0, "labels", "owner")
           }
-          objectEntity("port") {
-            keyVal("port", 80)
-            keyVal("target_port", 8080)
+          "port" block {
+            "port" eq 80
+            "target_port" eq 8080
           }
         }
       }
