@@ -14,6 +14,9 @@ import org.leafygreens.skelegro.terragro.DeclarationExtensions.terraformDeclarat
 import org.leafygreens.skelegro.terragro.DeclarationExtensions.variableDeclaration
 import org.leafygreens.skelegro.terragro.TestData.getFileSnapshot
 import org.leafygreens.skelegro.terragro.utils.FunctionCall
+import org.leafygreens.skelegro.terragro.utils.HclType
+import org.leafygreens.skelegro.terragro.utils.Heredoc
+import org.leafygreens.skelegro.terragro.utils.Reference
 
 internal class DeclarationTest {
 
@@ -361,13 +364,15 @@ internal class DeclarationTest {
   fun `Can declare a Heredoc value`() {
     // when
     val manifest = terraformManifest {
-      resourceDeclaration("vault_generic_secret", "my-secret") {
-        keyVal("data_json", Heredoc("EOF", """
-          {
-            "test": "${'$'}{kubernetes_namespace.vault.count}",
-          }
-        """.trimIndent()))
-        keyVal("path", "important/test")
+      "resource" label "vault_generic_secret" label "my_secret" block {
+        "data_json" eq Heredoc(
+          "EOF", """
+        {
+          "test": "${"$"}{kubernetes_namespace.vault.count}",
+        }
+      """.trimIndent()
+        )
+        "path" eq "important/test"
       }
     }
 
