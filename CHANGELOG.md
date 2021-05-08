@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 As of version 0.8.0, all breaking changes are marked with 🚨
 
+## [1.0.0-beta] - May 8th, 2021
+
+### Changed
+
+- Migrated to io.bkbn
+- Generalized packages
+
 ## [0.10.0] - May 7th, 2021
 
 ### Changed

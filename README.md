@@ -10,14 +10,45 @@ There are some challenges with that approach however, which is why the MVP libra
 the generative approach requires _something_ to generate off of.  Codified sources such as an API spec, JsonSchema, etc. 
 would all suffice.  
 
-## Modules
+## How to install
 
-### ActionGro
-
-The following example maps to a test yaml file that can be found in the test resources of the `actiongro` source code
+Kompendium uses GitHub packages as its repository.  Installing with Gradle is pretty painless.  In your `build.gradle.kts`
+add the following
 
 ```kotlin
-val manifest = githubAction {
+// 1 Setup a helper function to import any Github Repository Package
+// This step is optional but I have a bunch of stuff stored on github so I find it useful 😄
+fun RepositoryHandler.github(packageUrl: String) = maven { 
+    name = "GithubPackages"
+    url = uri(packageUrl)
+    credentials { // TODO Not sure this is necessary for public repositories?
+      username = java.lang.System.getenv("GITHUB_USER")
+      password = java.lang.System.getenv("GITHUB_TOKEN")
+    } 
+}
+
+// 2 Add the repo in question (in this case Skelegro)
+repositories {
+    github("https://maven.pkg.github.com/bkbnio/skelegro")
+}
+
+// 3 Add the package like any normal dependency
+dependencies { 
+    implementation("org.leafygreens:skelegro-hcl:0.1.0-beta")
+}
+
+```
+
+## Modules
+
+### YML
+
+The following example maps to a test yaml file that can be found in the test resources of the `skelegro-yml` source code.
+
+This builds a GitHub Action manifest
+
+```kotlin
+val manifest = yamlFile {
   "name" eq "Build and Deploy"
   "on" block {
     "push" block {
@@ -38,7 +69,7 @@ val manifest = githubAction {
         - ("uses" req "actions/setup-java@v1")
         indent {
           "with" block {
-            "java-version" eq "1.14"
+            "java-version" eq "1.11"
           }
         }
         - ("name" req "Cache Gradle Packages")
@@ -66,7 +97,7 @@ val manifest = githubAction {
         - ("uses" req "actions/setup-java@v1")
         indent {
           "with" block {
-            "java-version" eq "1.14"
+            "java-version" eq "1.11"
           }
         }
         - ("name" req "Docker Login")
@@ -101,13 +132,42 @@ val manifest = githubAction {
 }
 ```
 
-### DockerGro
+### Docker
 
-TODO
+The following builds a simple dockerfile that can be found in the test resources of the `skelegro-docker` module
 
-### GradleGro
+```kotlin
+docker {
+  FROM {
+    comment = "A basic apache server with PHP. To use either add or bind mount content under /var/www"
+    image = "kstaken/apache2"
+  }
+  LABEL {
+    labels = listOf(
+      Pair("maintainer", "Kimbro Staken"),
+      Pair("version", "0.1")
+    )
+  }
+  RUN {
+    commands = listOf(
+      "apt-get update",
+      "apt-get install -y php5 libapache2-mod-php5 php5-mysql php5-cli",
+      "apt-get clean",
+      "rm -rf /var/lib/apt/lists/*"
+    )
+    separator = " && "
+  }
+  CMD {
+    instructions = listOf(
+      "/usr/sbin/apache2",
+      "-D",
+      "FOREGROUND"
+    )
+  }
+}
+```
 
-#### Growing a gradle kts script
+### Gradle
 
 The following example maps (almost) one-to-one with the `build.gradle.kts` found in the root of this repository
 
@@ -162,7 +222,7 @@ val buildScript = buildGradleKts {
     `---`()
     fn("tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>").plus(".configureEach") block {
       "kotlinOptions" block {
-        "jvmTarget" eq "14"
+        "jvmTarget" eq "11"
       }
     }
     `---`()
@@ -176,7 +236,7 @@ val buildScript = buildGradleKts {
       "repositories" block {
         "maven" block {
           "name" eq "GithubPackages"
-          "url" eq FunctionCall("uri").withArguments("https://maven.pkg.github.com/lg-backbone/skelegro")
+          "url" eq FunctionCall("uri").withArguments("https://maven.pkg.github.com/bkbnio/skelegro")
           "credentials" block {
             "username" eq FunctionCall("System.getenv").withArguments("GITHUB_ACTOR")
             "password" eq FunctionCall("System.getenv").withArguments("GITHUB_TOKEN")
@@ -192,12 +252,12 @@ val buildScript = buildGradleKts {
 }
 ```
 
-### TerraGro
+### HCL
 
-Let's explore using `TerraGro` to generate a terraform manifest for a kubernetes deployment 
+Let's explore using `skelegro-hcl` to generate a Terraform manifest for a kubernetes deployment 
 
 ```kotlin
-val manifest = terraformManifest {
+val manifest = hclFile {
   "variable" label "github_token" block {
     "type" eq HclType.STRING
     "sensitive" eq true
