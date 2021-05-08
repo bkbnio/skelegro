@@ -55,15 +55,16 @@ fun terraformManifest(init: TerraformManifest.() -> Unit): TerraformManifest {
 
 fun main() {
   val test = terraformManifest {
-    "resource" label "vault_generic_secret" label "my_secret" block {
-      "data_json" eq Heredoc(
-        "EOF", """
-        {
-          "test": "${"$"}{kubernetes_namespace.vault.count}",
+    "resource" label "kubernetes_namespace" label "vault" block {
+      "metadata" block {
+        "annotations" eqBlock {
+          "name" eq "vault"
         }
-      """.trimIndent()
-      )
-      "path" eq "important/test"
+        "labels" eqBlock {
+          "role" eq "vault"
+        }
+        "name" eq "vault"
+      }
     }
   }
   println(test.toString())

@@ -272,17 +272,16 @@ internal class DeclarationTest {
   @Test
   fun `Can build a namespace via DSL`() {
     // when
-    val namespace = "vault"
     val manifest = terraformManifest {
-      resourceDeclaration("kubernetes_namespace", namespace) {
-        objectEntity("metadata") {
-          entityMap<String>("annotations") {
-            keyVal("name", namespace)
+      "resource" label "kubernetes_namespace" label "vault" block {
+        "metadata" block {
+          "annotations" eqBlock {
+            "name" eq "vault"
           }
-          entityMap<String>("labels") {
-            keyVal("role", namespace)
+          "labels" eqBlock {
+            "role" eq "vault"
           }
-          keyVal("name", namespace)
+          "name" eq "vault"
         }
       }
     }
