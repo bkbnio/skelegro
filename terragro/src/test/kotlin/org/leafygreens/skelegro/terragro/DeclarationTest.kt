@@ -381,11 +381,11 @@ internal class DeclarationTest {
   fun `Can declare a custom backend`() {
     // when
     val manifest = terraformManifest {
-      terraformDeclaration {
-        hcl("backend", "remote") {
-          keyVal("organization", "lg-backbone")
-          objectEntity("workspaces") {
-            keyVal("name", "my-amazing-workspace")
+      "terraform" block {
+        "backend" label "remote" block {
+          "organization" eq "lg-backbone"
+          "workspaces" block {
+            "name" eq "my-amazing-workspace"
           }
         }
       }
