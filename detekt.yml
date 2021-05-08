@@ -384,7 +384,7 @@ naming:
     excludes: ['**/test/**', '**/testIntegration/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     minimumFunctionNameLength: 3
   FunctionNaming:
-    active: true
+    active: false # Turned off due to Docker implementation
     excludes: ['**/test/**', '**/testIntegration/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**', '**/dockergro/**']
     functionPattern: '([a-z][a-zA-Z0-9]*)|(`.*`)'
     excludeClassPattern: '$^'

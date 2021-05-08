@@ -1,3 +1,6 @@
 rootProject.name = "skelegro"
-include("dockergro", "gradlegro", "actiongro", "terragro")
+include("skelegro-yml")
+include("skelegro-hcl")
+include("skelegro-gradle")
+include("skelegro-docker")
 enableFeaturePreview("VERSION_CATALOGS")
