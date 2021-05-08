@@ -2,6 +2,7 @@ variable "github_token" {
   type = string
   sensitive = true
 }
+
 resource "kubernetes_deployment" "potato_app" {
   metadata {
     name = base64decode(data.digitalocean_kubernetes_cluster.cluster.kube_config.0.cluster_ca_certificate)
