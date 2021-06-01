@@ -1,7 +1,11 @@
 package io.bkbn.skelegro.docker
 
 import com.google.common.truth.Truth.assertThat
-import io.bkbn.skelegro.docker.commands.*
+import io.bkbn.skelegro.docker.commands.CMD
+import io.bkbn.skelegro.docker.commands.COPY
+import io.bkbn.skelegro.docker.commands.FROM
+import io.bkbn.skelegro.docker.commands.RUN
+import io.bkbn.skelegro.docker.commands.WORKDIR
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
