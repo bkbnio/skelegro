@@ -4,6 +4,7 @@ import io.bkbn.skelegro.yml.utils.Helpers.getFileSnapshot
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
+@Suppress("LongMethod")
 internal class YamlFileTest {
 
   @Test
@@ -96,5 +97,4 @@ internal class YamlFileTest {
     val expected = getFileSnapshot("GithubActionExample.yaml")
     assertEquals(expected, manifest.toString().trim())
   }
-
 }

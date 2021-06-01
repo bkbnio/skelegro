@@ -8,6 +8,7 @@ import io.bkbn.skelegro.hcl.utils.HclType
 import io.bkbn.skelegro.hcl.utils.Heredoc
 import io.bkbn.skelegro.hcl.utils.Reference
 
+@Suppress("LongMethod")
 internal class DeclarationTest {
 
   @Test

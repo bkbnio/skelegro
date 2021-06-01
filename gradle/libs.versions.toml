@@ -5,14 +5,21 @@ junit = "5.6.2"
 mockk = "1.10.0"
 truth = "1.0.1"
 kotlinpoet = "1.7.2"
+detekt = "1.17.1"
 
 [libraries]
+# Kotlin
 kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx" }
 kotlinpoet = { group = "com.squareup", name = "kotlinpoet", version.ref = "kotlinpoet" }
+
+# Testing
 junit-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit" }
 junit-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
+
+# Linter
+detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 
 [bundles]
 test-impl = [ "junit-api", "mockk", "truth" ]

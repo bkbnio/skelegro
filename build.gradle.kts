@@ -1,10 +1,26 @@
+import com.adarshr.gradle.testlogger.TestLoggerExtension
+import com.adarshr.gradle.testlogger.theme.ThemeType
+import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-  id("org.jetbrains.kotlin.jvm") version "1.4.32" apply false
-  id("io.gitlab.arturbosch.detekt") version "1.16.0-RC2" apply false
+  id("org.jetbrains.kotlin.jvm") version "1.5.10" apply false
+  id("io.gitlab.arturbosch.detekt") version "1.17.1" apply false
   id("com.adarshr.test-logger") version "3.0.0" apply false
+  id("io.github.gradle-nexus.publish-plugin") version "1.1.0" apply true
+  id("com.github.jakemarsden.git-hooks") version "0.0.2" apply true
 }
 
-allprojects {
+gitHooks {
+  setHooks(
+    mapOf(
+      "pre-commit" to "detekt",
+      "pre-push" to "test"
+    )
+  )
+}
+
+subprojects {
   group = "io.bkbn"
   version = run {
     val baseVersion =
@@ -25,14 +41,15 @@ allprojects {
   apply(plugin = "com.adarshr.test-logger")
   apply(plugin = "java-library")
   apply(plugin = "maven-publish")
+  apply(plugin = "signing")
   apply(plugin = "idea")
 
   tasks.withType<Test>() {
     useJUnitPlatform()
   }
 
-  configure<com.adarshr.gradle.testlogger.TestLoggerExtension> {
-    theme = com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA
+  configure<TestLoggerExtension> {
+    theme = ThemeType.MOCHA
     logLevel = LogLevel.LIFECYCLE
     showExceptions = true
     showStackTraces = true
@@ -50,14 +67,14 @@ allprojects {
     showFailedStandardStreams = true
   }
 
-  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+  tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions {
       jvmTarget = "11"
     }
   }
 
-  configure<io.gitlab.arturbosch.detekt.extensions.DetektExtension> {
-    toolVersion = "1.16.0-RC2"
+  configure<DetektExtension> {
+    toolVersion = "1.17.1"
     config = files("${rootProject.projectDir}/detekt.yml")
     buildUponDefaultConfig = true
   }
@@ -73,9 +90,57 @@ allprojects {
         }
       }
     }
+    publications {
+      create<MavenPublication>("skelegro") {
+        groupId = project.group.toString()
+        artifactId = project.name.toLowerCase()
+        version = project.version.toString()
+
+        pom {
+          name.set("Kompendium")
+          description.set("A minimally invasive OpenAPI spec generator for Ktor")
+          url.set("https://github.com/bkbnio/Kompendium")
+          licenses {
+            license {
+              name.set("MIT License")
+              url.set("https://mit-license.org/")
+            }
+          }
+          developers {
+            developer {
+              id.set("bkbnio")
+              name.set("Ryan Brink")
+              email.set("admin@bkbn.io")
+            }
+          }
+          scm {
+            connection.set("scm:git:git://github.com/bkbnio/Kompendium.git")
+            developerConnection.set("scm:git:ssh://github.com/bkbnio/Kompendium.git")
+            url.set("https://github.com/bkbnio/Kompendium.git")
+          }
+        }
+      }
+    }
   }
 
   configure<JavaPluginExtension> {
     withSourcesJar()
+    withJavadocJar()
+  }
+
+  configure<SigningExtension> {
+    val signingKey: String? by project
+    val signingPassword: String? by project
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(extensions.getByType(PublishingExtension::class).publications)
+  }
+}
+
+nexusPublishing {
+  repositories {
+    sonatype {
+      nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+      snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+    }
   }
 }

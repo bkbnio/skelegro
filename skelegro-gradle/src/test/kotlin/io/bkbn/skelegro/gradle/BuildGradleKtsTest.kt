@@ -7,6 +7,7 @@ import io.bkbn.skelegro.gradle.utils.EnumReference
 import io.bkbn.skelegro.gradle.utils.FunctionCall
 import io.bkbn.skelegro.gradle.utils.NamedParameter
 
+@Suppress("LongMethod")
 internal class BuildGradleKtsTest {
 
   @Test
@@ -109,5 +110,4 @@ internal class BuildGradleKtsTest {
     val expected = getFileSnapshot("ExampleSettingsFile.txt")
     assertEquals(expected, settingsFile.toString().trim())
   }
-
 }
