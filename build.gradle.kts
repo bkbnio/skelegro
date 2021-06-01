@@ -20,7 +20,7 @@ gitHooks {
   )
 }
 
-subprojects {
+allprojects {
   group = "io.bkbn"
   version = run {
     val baseVersion =
