@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 As of version 0.8.0, all breaking changes are marked with 🚨
 
+## [1.0.0] - June 1st, 2021
+
+### Added
+
+- Code Coverage
+
 ## [1.0.0-rc] - June 1st, 2021
 
 ### Added
