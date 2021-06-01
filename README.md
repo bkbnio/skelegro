@@ -1,40 +1,40 @@
-# Skelegro 
+# Skelegro
 
-## What is Skelegro 
+## What is Skelegro
 
 Skelegro is a collection of Kotlin DSLs made to assist in the generation of full fledged repositories.  Currently,
 they are being built on a by-need basis, and are constructed in a highly manual manner.  Ideally, in a follow up version,
 this could be modified to generate DSLs from source much like the amazing https://github.com/fkorotkov/k8s-kotlin-dsl.
 
-There are some challenges with that approach however, which is why the MVP libraries are all manually declared.  Primarily, 
-the generative approach requires _something_ to generate off of.  Codified sources such as an API spec, JsonSchema, etc. 
-would all suffice.  
+There are some challenges with that approach however, which is why the MVP libraries are all manually declared.  Primarily,
+the generative approach requires _something_ to generate off of.  Codified sources such as an API spec, JsonSchema, etc.
+would all suffice.
 
 ## How to install
 
-Kompendium uses GitHub packages as its repository.  Installing with Gradle is pretty painless.  In your `build.gradle.kts`
+Skelegro uses GitHub packages as its repository.  Installing with Gradle is pretty painless.  In your `build.gradle.kts`
 add the following
 
 ```kotlin
 // 1 Setup a helper function to import any Github Repository Package
 // This step is optional but I have a bunch of stuff stored on github so I find it useful 😄
-fun RepositoryHandler.github(packageUrl: String) = maven { 
+fun RepositoryHandler.github(packageUrl: String) = maven {
     name = "GithubPackages"
     url = uri(packageUrl)
-    credentials { // TODO Not sure this is necessary for public repositories?
+    credentials {
       username = java.lang.System.getenv("GITHUB_USER")
       password = java.lang.System.getenv("GITHUB_TOKEN")
-    } 
-}
+    }
+  }
 
 // 2 Add the repo in question (in this case Skelegro)
 repositories {
-    github("https://maven.pkg.github.com/bkbnio/skelegro")
+  github("https://maven.pkg.github.com/bkbnio/skelegro")
 }
 
 // 3 Add the package like any normal dependency
-dependencies { 
-    implementation("org.leafygreens:skelegro-hcl:0.1.0-beta")
+dependencies {
+  implementation("org.leafygreens:skelegro-hcl:0.1.0-beta")
 }
 
 ```
@@ -254,7 +254,7 @@ val buildScript = buildGradleKts {
 
 ### HCL
 
-Let's explore using `skelegro-hcl` to generate a Terraform manifest for a kubernetes deployment 
+Let's explore using `skelegro-hcl` to generate a Terraform manifest for a kubernetes deployment
 
 ```kotlin
 val manifest = hclFile {

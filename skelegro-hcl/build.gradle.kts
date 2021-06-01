@@ -5,16 +5,15 @@ dependencies {
   implementation(libs.kotlinx.coroutines)
 
   testImplementation(libs.bundles.test.impl)
-  testRuntime(libs.bundles.test.run)
+  testImplementation(libs.bundles.test.run)
 
-  detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.16.0-RC2")
+  detektPlugins(libs.detekt.formatting)
 }
 
 publishing {
-  publications {
-    create<MavenPublication>("hcl") {
-      from(components["kotlin"])
-      artifact(tasks.sourcesJar)
-    }
+  publications.withType<MavenPublication>().configureEach {
+    from(components["kotlin"])
+    artifact(tasks.sourcesJar)
+    artifact(tasks.javadocJar)
   }
 }
