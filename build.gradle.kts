@@ -97,9 +97,9 @@ subprojects {
         version = project.version.toString()
 
         pom {
-          name.set("Kompendium")
-          description.set("A minimally invasive OpenAPI spec generator for Ktor")
-          url.set("https://github.com/bkbnio/Kompendium")
+          name.set("Skelegro")
+          description.set("A wacky assortment of Kotlin DSLs for infrastructure manifest generation")
+          url.set("https://github.com/bkbnio/skelegro")
           licenses {
             license {
               name.set("MIT License")
@@ -114,9 +114,9 @@ subprojects {
             }
           }
           scm {
-            connection.set("scm:git:git://github.com/bkbnio/Kompendium.git")
-            developerConnection.set("scm:git:ssh://github.com/bkbnio/Kompendium.git")
-            url.set("https://github.com/bkbnio/Kompendium.git")
+            connection.set("scm:git:git://github.com/bkbnio/skelegro.git")
+            developerConnection.set("scm:git:ssh://github.com/bkbnio/skelegro.git")
+            url.set("https://github.com/bkbnio/skelegro.git")
           }
         }
       }
