@@ -90,7 +90,7 @@ allprojects {
     repositories {
       maven {
         name = "GithubPackages"
-        url = uri("https://maven.pkg.github.com/bkbnio/kovert")
+        url = uri("https://maven.pkg.github.com/bkbnio/skelegro")
         credentials {
           username = System.getenv("GITHUB_ACTOR")
           password = System.getenv("GITHUB_TOKEN")
@@ -98,7 +98,7 @@ allprojects {
       }
     }
     publications {
-      create<MavenPublication>("kovert") {
+      create<MavenPublication>("skelegro") {
         groupId = project.group.toString()
         artifactId = project.name.toLowerCase()
         version = project.version.toString()
