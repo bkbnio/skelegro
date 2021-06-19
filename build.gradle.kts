@@ -20,7 +20,7 @@ gitHooks {
   )
 }
 
-subprojects {
+allprojects {
   group = "io.bkbn"
   version = run {
     val baseVersion =
@@ -86,6 +86,31 @@ subprojects {
     withJavadocJar()
   }
 
+  configure<JacocoPluginExtension> {
+    toolVersion = "0.8.7"
+  }
+
+  // Should only happen on release, when publishing to nexus
+  if ((project.findProperty("release") as? String)?.toBoolean() == true) {
+    configure<SigningExtension> {
+      val signingKey: String? by project
+      val signingPassword: String? by project
+      useInMemoryPgpKeys(signingKey, signingPassword)
+      sign(extensions.getByType(PublishingExtension::class).publications)
+    }
+  }
+}
+
+nexusPublishing {
+  repositories {
+    sonatype {
+      nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+      snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+    }
+  }
+}
+
+subprojects {
   configure<PublishingExtension> {
     repositories {
       maven {
@@ -127,29 +152,6 @@ subprojects {
           }
         }
       }
-    }
-  }
-
-  configure<JacocoPluginExtension> {
-    toolVersion = "0.8.7"
-  }
-
-  // Should only happen on release, when publishing to nexus
-  if ((project.findProperty("release") as? String)?.toBoolean() == true) {
-    configure<SigningExtension> {
-      val signingKey: String? by project
-      val signingPassword: String? by project
-      useInMemoryPgpKeys(signingKey, signingPassword)
-      sign(extensions.getByType(PublishingExtension::class).publications)
-    }
-  }
-}
-
-nexusPublishing {
-  repositories {
-    sonatype {
-      nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-      snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
     }
   }
 }

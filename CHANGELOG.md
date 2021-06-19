@@ -10,7 +10,7 @@ As of version 0.8.0, all breaking changes are marked with 🚨
 
 ### Changed
 
-- Only apply build details to sub projects
+- Only apply build details to sub-projects
 
 ## [1.0.1] - June 19th, 2021
 
