@@ -32,8 +32,8 @@ allprojects {
   }
 
   repositories {
-    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven") }
     mavenCentral()
+    mavenLocal()
   }
 
   apply(plugin = "org.jetbrains.kotlin.jvm")
@@ -45,20 +45,9 @@ allprojects {
   apply(plugin = "signing")
   apply(plugin = "idea")
 
-  tasks.withType<Test>() {
+  tasks.withType<Test> {
     useJUnitPlatform()
     finalizedBy(tasks.withType(JacocoReport::class))
-  }
-
-  tasks.withType<JacocoReport>() {
-    reports {
-      html.isEnabled = true
-      xml.isEnabled = true
-    }
-  }
-
-  configure<JacocoPluginExtension> {
-    toolVersion = "0.8.7"
   }
 
   configure<TestLoggerExtension> {
@@ -92,11 +81,16 @@ allprojects {
     buildUponDefaultConfig = true
   }
 
+  configure<JavaPluginExtension> {
+    withSourcesJar()
+    withJavadocJar()
+  }
+
   configure<PublishingExtension> {
     repositories {
       maven {
         name = "GithubPackages"
-        url = uri("https://maven.pkg.github.com/bkbnio/skelegro")
+        url = uri("https://maven.pkg.github.com/bkbnio/kovert")
         credentials {
           username = System.getenv("GITHUB_ACTOR")
           password = System.getenv("GITHUB_TOKEN")
@@ -104,7 +98,7 @@ allprojects {
       }
     }
     publications {
-      create<MavenPublication>("skelegro") {
+      create<MavenPublication>("kovert") {
         groupId = project.group.toString()
         artifactId = project.name.toLowerCase()
         version = project.version.toString()
@@ -136,16 +130,18 @@ allprojects {
     }
   }
 
-  configure<JavaPluginExtension> {
-    withSourcesJar()
-    withJavadocJar()
+  configure<JacocoPluginExtension> {
+    toolVersion = "0.8.7"
   }
 
-  configure<SigningExtension> {
-    val signingKey: String? by project
-    val signingPassword: String? by project
-    useInMemoryPgpKeys(signingKey, signingPassword)
-    sign(extensions.getByType(PublishingExtension::class).publications)
+  // Should only happen on release, when publishing to nexus
+  if ((project.findProperty("release") as? String)?.toBoolean() == true) {
+    configure<SigningExtension> {
+      val signingKey: String? by project
+      val signingPassword: String? by project
+      useInMemoryPgpKeys(signingKey, signingPassword)
+      sign(extensions.getByType(PublishingExtension::class).publications)
+    }
   }
 }
 
@@ -161,8 +157,9 @@ nexusPublishing {
 tasks.register<JacocoReport>("jacocoRootReport") {
   subprojects {
     this@subprojects.plugins.withType<JacocoPlugin>().configureEach {
-      this@subprojects.tasks.matching {
-        it.extensions.findByType<JacocoTaskExtension>() != null }
+      this@subprojects.tasks
+        // TODO This is ghetto af lol fix this... for that matter.. track ITs??
+        .matching { it.extensions.findByType<JacocoTaskExtension>() != null && it.name != "testIntegration" }
         .configureEach {
           sourceSets(this@subprojects.the<SourceSetContainer>().named("main").get())
           executionData(this)
