@@ -1,12 +1,10 @@
 plugins {
-  id("io.bkbn.sourdough.root") version "0.0.3"
+  id("io.bkbn.sourdough.root") version "0.0.5"
   id("com.github.jakemarsden.git-hooks") version "0.0.2" apply true
 }
 
 sourdough {
-  sonatypeBaseUrl.set("https://s01.oss.sonatype.org")
-  javaVersion.set(JavaVersion.VERSION_11)
-  compilerArgs.set(listOf("-opt-in=kotlin.RequiresOptIn"))
+  compilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
 }
 
 gitHooks {
@@ -33,16 +31,16 @@ allprojects {
 subprojects {
   apply(plugin = "io.bkbn.sourdough.library")
   configure<io.bkbn.sourdough.gradle.core.extension.SourdoughLibraryExtension> {
-    githubOrg.set("bkbnio")
-    githubRepo.set("skelegro")
-    githubUsername.set(System.getenv("GITHUB_ACTOR"))
-    githubToken.set(System.getenv("GITHUB_TOKEN"))
-    libraryName.set("Skelegro")
-    libraryDescription.set("A wacky assortment of Kotlin DSLs for infrastructure manifest generation")
-    licenseName.set("MIT License")
-    licenseUrl.set("https://mit-license.org/")
-    developerId.set("bkbnio")
-    developerName.set("Ryan Brink")
-    developerEmail.set("admin@bkbn.io")
+    githubOrg = "bkbnio"
+    githubRepo = "skelegro"
+    githubUsername = System.getenv("GITHUB_ACTOR")
+    githubToken = System.getenv("GITHUB_TOKEN")
+    libraryName = "Skelegro"
+    libraryDescription = "A wacky assortment of Kotlin DSLs for infrastructure manifest generation"
+    licenseName = "MIT License"
+    licenseUrl = "https://mit-license.org/"
+    developerId = "bkbnio"
+    developerName = "Ryan Brink"
+    developerEmail = "admin@bkbn.io"
   }
 }
