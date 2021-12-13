@@ -27,18 +27,14 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
-      - name: Cache Gradle packages
-        uses: actions/cache@v2
+      - name: Unit Tests
+        uses: burrunan/gradle-cache-action@v1
         with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
-          restore-keys: ${{ runner.os }}-gradle
-      - name: Assemble with Gradle
-        run: ./gradlew assemble
-      - name: Run Unit Tests
-        run: ./gradlew test
-      - name: Collect Coverage Reports
-        run: ./gradlew koverCollectReports
+          gradle-version: wrapper
+          arguments: test koverCollectReports
+          properties: |
+            org.gradle.vfs.watch=false
+            org.gradle.vfs.verbose=false
 #      - name: Publish code coverage to Codacy
 #        uses: codacy/codacy-coverage-reporter-action@v1
 #        with:
