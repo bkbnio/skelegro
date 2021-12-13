@@ -48,6 +48,6 @@ jobs:
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: buildl/kover-report
+          directory: build/kover-report
           fail_ci_if_error: true
           verbose: true
