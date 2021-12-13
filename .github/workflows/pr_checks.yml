@@ -43,4 +43,4 @@ jobs:
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: build/kover-report/skelegro-docker.xml,build/kover-report/skelegro-gradle.xml,build/kover-report/skelegro-hcl.xml,build/kover-report/skelegro-yml.xml
+          coverage-reports: ../build/kover-report/skelegro-docker.xml,../build/kover-report/skelegro-gradle.xml,../build/kover-report/skelegro-hcl.xml,../build/kover-report/skelegro-yml.xml
