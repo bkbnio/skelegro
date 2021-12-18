@@ -1,5 +1,5 @@
 plugins {
-  id("io.bkbn.sourdough.root") version "0.2.1"
+  id("io.bkbn.sourdough.root") version "0.3.0"
   id("com.github.jakemarsden.git-hooks") version "0.0.2" apply true
 }
 
