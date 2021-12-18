@@ -1,9 +1,11 @@
 plugins {
-  id("io.bkbn.sourdough.root") version "0.1.0"
+  id("io.bkbn.sourdough.root") version "0.1.1"
   id("com.github.jakemarsden.git-hooks") version "0.0.2" apply true
 }
 
 sourdough {
+  toolChainJavaVersion = JavaVersion.VERSION_17
+  jvmTarget = JavaVersion.VERSION_11.majorVersion
   compilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
 }
 
