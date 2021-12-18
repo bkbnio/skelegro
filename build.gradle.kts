@@ -29,19 +29,3 @@ allprojects {
     }
   }
 }
-
-subprojects {
-  apply(plugin = "io.bkbn.sourdough.library")
-
-  configure<io.bkbn.sourdough.gradle.core.extension.SourdoughLibraryExtension> {
-    githubOrg.set("bkbnio")
-    githubRepo.set("skelegro")
-    libraryName.set("Skelegro")
-    libraryDescription.set("A wacky assortment of Kotlin DSLs for infrastructure manifest generation")
-    licenseName.set("MIT License")
-    licenseUrl.set("https://mit-license.org")
-    developerId.set("bkbnio")
-    developerName.set("Ryan Brink")
-    developerEmail.set("admin@bkbn.io")
-  }
-}
