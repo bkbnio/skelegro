@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 As of version 0.8.0, all breaking changes are marked with 🚨
 
+## [1.2.0] - December 18th, 2021
+### Question
+- Was it all a dream?
+
 ## [1.1.2] - December 17th, 2021
 ### Changed
 - Fixed bug in release pipeline

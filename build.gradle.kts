@@ -1,7 +1,6 @@
 plugins {
-  id("io.bkbn.sourdough.root") version "0.2.9"
+  id("io.bkbn.sourdough.root") version "0.3.0"
   id("com.github.jakemarsden.git-hooks") version "0.0.2" apply true
-//  id("io.github.gradle-nexus.publish-plugin") version "1.1.0" apply true
 }
 
 sourdough {
@@ -46,12 +45,3 @@ subprojects {
     developerEmail.set("admin@bkbn.io")
   }
 }
-
-//nexusPublishing {
-//  repositories {
-//    sonatype {
-//      nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-//      snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-//    }
-//  }
-//}
