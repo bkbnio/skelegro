@@ -16,8 +16,8 @@ Skelegro uses GitHub packages as its repository.  Installing with Gradle is pret
 add the following
 
 ```kotlin
-// 1 Set up a helper function to import any Github Repository Package
-// This step is optional but I have a bunch of stuff stored on github so I find it useful 😄
+// 1 Set up a helper function to import any GitHub Repository Package
+// This step is optional, but I have a bunch of stuff stored on GitHub, so I find it useful 😄
 fun RepositoryHandler.github(packageUrl: String) = maven {
     name = "GithubPackages"
     url = uri(packageUrl)
