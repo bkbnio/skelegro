@@ -40,3 +40,6 @@ jobs:
           arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
           properties: |
             release=true
+        env:
+          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USER }}
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
