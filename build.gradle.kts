@@ -1,5 +1,5 @@
 plugins {
-  id("io.bkbn.sourdough.root") version "0.2.4"
+  id("io.bkbn.sourdough.root") version "0.2.5"
   id("com.github.jakemarsden.git-hooks") version "0.0.2" apply true
 }
 
@@ -31,17 +31,6 @@ allprojects {
 }
 
 subprojects {
-  apply(plugin = "io.bkbn.sourdough.library")
-
-  configure<io.bkbn.sourdough.gradle.core.extension.SourdoughLibraryExtension> {
-    githubOrg.set("bkbnio")
-    githubRepo.set("skelegro")
-    libraryName.set("Skelegro")
-    libraryDescription.set("A wacky assortment of Kotlin DSLs for infrastructure manifest generation")
-    licenseName.set("MIT License")
-    licenseUrl.set("https://mit-license.org")
-    developerId.set("bkbnio")
-    developerName.set("Ryan Brink")
-    developerEmail.set("admin@bkbn.io")
-  }
+  apply(plugin = "maven-publish")
+  apply(plugin = "signing")
 }
