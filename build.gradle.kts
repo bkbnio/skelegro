@@ -1,5 +1,5 @@
 plugins {
-  id("io.bkbn.sourdough.root") version "0.2.5"
+  id("io.bkbn.sourdough.root") version "0.2.6"
   id("com.github.jakemarsden.git-hooks") version "0.0.2" apply true
 }
 
@@ -33,4 +33,6 @@ allprojects {
 subprojects {
   apply(plugin = "maven-publish")
   apply(plugin = "signing")
+  apply(plugin = "java")
+  apply(plugin = "java-library")
 }
