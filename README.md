@@ -1,5 +1,7 @@
 # Skelegro
 
+![Maven Central](https://img.shields.io/maven-central/v/io.bkbn/skelegro-docker?style=for-the-badge)
+
 ## What is Skelegro
 
 Skelegro is a collection of Kotlin DSLs made to assist in the generation of full-fledged repositories.  Currently,
@@ -12,29 +14,18 @@ would all suffice.
 
 ## How to install
 
-Skelegro uses GitHub packages as its repository.  Installing with Gradle is pretty painless.  In your `build.gradle.kts`
-add the following
+Skelegro is published to Maven Central. 
 
 ```kotlin
-// 1 Set up a helper function to import any GitHub Repository Package
-// This step is optional, but I have a bunch of stuff stored on GitHub, so I find it useful 😄
-fun RepositoryHandler.github(packageUrl: String) = maven {
-    name = "GithubPackages"
-    url = uri(packageUrl)
-    credentials {
-      username = java.lang.System.getenv("GITHUB_USER")
-      password = java.lang.System.getenv("GITHUB_TOKEN")
-    }
-  }
-
-// 2 Add the repo in question (in this case Skelegro)
 repositories {
-  github("https://maven.pkg.github.com/bkbnio/skelegro")
+    mavenCentral()
 }
 
-// 3 Add the package like any normal dependency
 dependencies {
-  implementation("org.leafygreens:skelegro-hcl:0.1.0-beta")
+  implementation("io.bkbn:skelegro-docker:latest.release")
+  implementation("io.bkbn:skelegro-gradle:latest.release")
+  implementation("io.bkbn:skelegro-hcl:latest.release")
+  implementation("io.bkbn:skelegro-yml:latest.release")
 }
 
 ```

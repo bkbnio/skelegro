@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 As of version 0.8.0, all breaking changes are marked with 🚨
 
+## [1.1.1] - December 17th, 2021
+### Changed
+- Fixed bug in sonatype publishing
+- Removed some comments
+- Updated README
+
 ## [1.1.0] - December 7th, 2021
 
 ### Changed

@@ -19,8 +19,5 @@ jobs:
         with:
           gradle-version: wrapper
           arguments: publishAllPublicationsToGithubPackagesRepository
-#          properties: |
-#            org.gradle.vfs.watch=false
-#            org.gradle.vfs.verbose=false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
