@@ -38,7 +38,7 @@ jobs:
         uses: burrunan/gradle-cache-action@v1
         with:
           gradle-version: wrapper
-          arguments: publishToSonatype --info
+          arguments: publishToSonatype --stacktrace
           properties: |
             release=true
         env:
@@ -48,7 +48,7 @@ jobs:
         uses: burrunan/gradle-cache-action@v1
         with:
           gradle-version: wrapper
-          arguments: closeAndReleaseSonatypeStagingRepository --info
+          arguments: closeAndReleaseSonatypeStagingRepository --stacktrace
           properties: |
             release=true
         env:
