@@ -2,7 +2,7 @@
 
 ## What is Skelegro
 
-Skelegro is a collection of Kotlin DSLs made to assist in the generation of full fledged repositories.  Currently,
+Skelegro is a collection of Kotlin DSLs made to assist in the generation of full-fledged repositories.  Currently,
 they are being built on a by-need basis, and are constructed in a highly manual manner.  Ideally, in a follow up version,
 this could be modified to generate DSLs from source much like the amazing https://github.com/fkorotkov/k8s-kotlin-dsl.
 
@@ -16,8 +16,8 @@ Skelegro uses GitHub packages as its repository.  Installing with Gradle is pret
 add the following
 
 ```kotlin
-// 1 Setup a helper function to import any Github Repository Package
-// This step is optional but I have a bunch of stuff stored on github so I find it useful 😄
+// 1 Set up a helper function to import any GitHub Repository Package
+// This step is optional, but I have a bunch of stuff stored on GitHub, so I find it useful 😄
 fun RepositoryHandler.github(packageUrl: String) = maven {
     name = "GithubPackages"
     url = uri(packageUrl)

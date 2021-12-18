@@ -6,11 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 As of version 0.8.0, all breaking changes are marked with 🚨
 
+## [1.1.0] - December 7th, 2021
+
+### Changed
+
+- Integrated sourdough plugins to reduce gradle boilerplate
+- Dropped Codacy Integration b/c Codacy sucks
+
 ## [1.0.2] - June 19th, 2021
 
 ### Changed
 
-- Only apply build details to sub-projects
+- Only apply build details to subprojects
 
 ## [1.0.1] - June 19th, 2021
 

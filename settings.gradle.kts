@@ -4,3 +4,10 @@ include("skelegro-hcl")
 include("skelegro-gradle")
 include("skelegro-docker")
 enableFeaturePreview("VERSION_CATALOGS")
+
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+    mavenLocal()
+  }
+}
