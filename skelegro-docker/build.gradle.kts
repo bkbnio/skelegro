@@ -30,7 +30,7 @@ testing {
     named("test", JvmTestSuite::class) {
       useJUnitJupiter()
       dependencies {
-        implementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
+        implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
         implementation("io.mockk:mockk:1.12.2")
         implementation("com.google.truth:truth:1.1.3")
       }
