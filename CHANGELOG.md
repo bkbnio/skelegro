@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 As of version 0.8.0, all breaking changes are marked with 🚨
 
+## [1.2.1] - February 22nd, 2022
+### Added
+- Misc Gradle Helpers
+
 ## [1.2.0] - December 18th, 2021
 ### Question
 - Was it all a dream?
