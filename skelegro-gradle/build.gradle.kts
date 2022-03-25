@@ -22,7 +22,7 @@ sourdough {
 }
 
 dependencies {
-  implementation("com.squareup:kotlinpoet:1.10.2")
+  implementation("com.squareup:kotlinpoet:1.11.0")
 }
 
 testing {
