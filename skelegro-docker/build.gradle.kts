@@ -22,7 +22,7 @@ sourdough {
 }
 
 dependencies {
-  implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.6.0")
+  implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.6.1")
 }
 
 testing {
