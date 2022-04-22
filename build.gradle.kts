@@ -1,6 +1,6 @@
 plugins {
   kotlin("jvm") version "1.6.20" apply false
-  id("io.bkbn.sourdough.root") version "0.6.0"
+  id("io.bkbn.sourdough.root") version "0.7.0"
   id("com.github.jakemarsden.git-hooks") version "0.0.2"
   id("org.jetbrains.dokka") version "1.6.20"
   id("org.jetbrains.kotlinx.kover") version "0.5.0"
