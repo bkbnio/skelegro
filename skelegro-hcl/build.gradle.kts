@@ -1,15 +1,14 @@
 plugins {
   kotlin("jvm")
-  id("io.bkbn.sourdough.library.jvm") version "0.6.0"
-  id("io.gitlab.arturbosch.detekt") version "1.19.0"
-  id("com.adarshr.test-logger") version "3.2.0"
-  id("org.jetbrains.dokka")
+  id("io.bkbn.sourdough.library.jvm")
+  id("io.gitlab.arturbosch.detekt")
+  id("com.adarshr.test-logger")
   id("maven-publish")
   id("java-library")
   id("signing")
 }
 
-sourdough {
+sourdoughLibrary {
   githubOrg.set("bkbnio")
   githubRepo.set("skelegro")
   libraryName.set("Skelegro HCL")
