@@ -1,6 +1,7 @@
 plugins {
   kotlin("jvm")
   id("io.bkbn.sourdough.library.jvm")
+  id("org.jetbrains.kotlinx.kover")
   id("io.gitlab.arturbosch.detekt")
   id("com.adarshr.test-logger")
   id("maven-publish")
@@ -9,15 +10,8 @@ plugins {
 }
 
 sourdoughLibrary {
-  githubOrg.set("bkbnio")
-  githubRepo.set("skelegro")
   libraryName.set("Skelegro Docker")
   libraryDescription.set("Kotlin DSL to generated Dockerfiles️")
-  licenseName.set("MIT License")
-  licenseUrl.set("https://mit-license.org")
-  developerId.set("unredundant")
-  developerName.set("Ryan Brink")
-  developerEmail.set("admin@bkbn.io")
 }
 
 dependencies {
