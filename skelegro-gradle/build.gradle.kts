@@ -1,24 +1,17 @@
 plugins {
   kotlin("jvm")
-  id("io.bkbn.sourdough.library.jvm") version "0.6.0"
-  id("io.gitlab.arturbosch.detekt") version "1.19.0"
-  id("com.adarshr.test-logger") version "3.2.0"
-  id("org.jetbrains.dokka")
+  id("io.bkbn.sourdough.library.jvm")
+  id("org.jetbrains.kotlinx.kover")
+  id("io.gitlab.arturbosch.detekt")
+  id("com.adarshr.test-logger")
   id("maven-publish")
   id("java-library")
   id("signing")
 }
 
-sourdough {
-  githubOrg.set("bkbnio")
-  githubRepo.set("skelegro")
+sourdoughLibrary {
   libraryName.set("Skelegro Gradle")
   libraryDescription.set("Kotlin DSL to generate Gradle .kts files")
-  licenseName.set("MIT License")
-  licenseUrl.set("https://mit-license.org")
-  developerId.set("unredundant")
-  developerName.set("Ryan Brink")
-  developerEmail.set("admin@bkbn.io")
 }
 
 dependencies {
