@@ -15,7 +15,7 @@ sourdoughLibrary {
 }
 
 dependencies {
-  implementation("com.squareup:kotlinpoet:1.14.0")
+  implementation("com.squareup:kotlinpoet:1.14.1")
 }
 
 testing {
