@@ -6,6 +6,7 @@ import io.bkbn.skelegro.gradle.util.Helpers.getFileSnapshot
 import io.bkbn.skelegro.gradle.utils.EnumReference
 import io.bkbn.skelegro.gradle.utils.FunctionCall
 import io.bkbn.skelegro.gradle.utils.NamedParameter
+import io.bkbn.skelegro.gradle.utils.PropertyReference
 
 @Suppress("LongMethod")
 internal class BuildGradleKtsTest {
@@ -88,6 +89,13 @@ internal class BuildGradleKtsTest {
         `---`()
         "configure<JavaPluginExtension>" block {
           +fn("withSourcesJar")
+        }
+        `---`()
+        "docker" block {
+          "name" eq "\${project.name}:\${project.version}"
+          +fn("files", PropertyReference(FunctionCall("tasks.installDist.get"), "outputs"))
+          +fn("tag", "DigitalOceanVersioned", "registry.digitalocean.com/bkbn/\${project.name}:\${project.version}")
+          +fn("tag", "DigitalOceanLatest", "registry.digitalocean.com/bkbn/\${project.name}:latest")
         }
       }
     }
