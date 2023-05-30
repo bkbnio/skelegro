@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 As of version 0.8.0, all breaking changes are marked with 🚨
 
+## [1.2.2] - May 29th, 2023
+
+### Added
+
+- Ability to declare property reference calls
+
 ## [1.2.1] - February 22nd, 2022
 ### Added
 - Misc Gradle Helpers

@@ -73,4 +73,11 @@ allprojects {
   configure<JavaPluginExtension> {
     withSourcesJar()
   }
+
+  docker {
+    name = "${project.name}:${project.version}"
+    files(tasks.installDist.get().outputs)
+    tag("DigitalOceanVersioned", "registry.digitalocean.com/bkbn/${project.name}:${project.version}")
+    tag("DigitalOceanLatest", "registry.digitalocean.com/bkbn/${project.name}:latest")
+  }
 }
