@@ -20,7 +20,7 @@ testing {
       useJUnitJupiter()
       dependencies {
         implementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
-        implementation("io.mockk:mockk:1.13.7")
+        implementation("io.mockk:mockk:1.13.8")
         implementation("com.google.truth:truth:1.1.5")
       }
     }
