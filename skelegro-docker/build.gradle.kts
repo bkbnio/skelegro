@@ -15,7 +15,7 @@ sourdoughLibrary {
 }
 
 dependencies {
-  implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.7.3")
+  implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.8.0")
 }
 
 testing {
