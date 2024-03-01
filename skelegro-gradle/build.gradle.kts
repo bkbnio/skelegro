@@ -25,7 +25,7 @@ testing {
       dependencies {
         implementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
         implementation("io.mockk:mockk:1.13.10")
-        implementation("com.google.truth:truth:1.4.1")
+        implementation("com.google.truth:truth:1.4.2")
       }
     }
   }
