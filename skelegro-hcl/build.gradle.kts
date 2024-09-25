@@ -19,7 +19,7 @@ testing {
     named("test", JvmTestSuite::class) {
       useJUnitJupiter()
       dependencies {
-        implementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
+        implementation("org.junit.jupiter:junit-jupiter-api:5.11.1")
         implementation("io.mockk:mockk:1.13.12")
         implementation("com.google.truth:truth:1.4.4")
       }
